@@ -9,7 +9,7 @@ def walk():
 
     rate = rospy.Rate(10)
 
-    cmd_msg = LowCmd()
+    cmd_msg = MotorCmd()
     cmd_msg.mode = 10
     cmd_msg.q = 1.0
     cmd_msg.dq = 0.01
