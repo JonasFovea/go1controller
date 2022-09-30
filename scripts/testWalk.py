@@ -10,7 +10,7 @@ def walk():
     rate = rospy.Rate(10)
 
     cmd_msg = HighCmd()
-    cmd_msg.level = 0x00
+    cmd_msg.levelFlag = 0x00
     cmd_msg.mode = 2                # Standing: 1; Walking: 2
     cmd_msg.gaitType = 1
     cmd_msg.speedLevel = 0
