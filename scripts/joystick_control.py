@@ -24,12 +24,12 @@ class JoyControl:
     __SPEED_PLACES = 2
     __ANGLE_PLACES = 4
     __ANGULAR_PLACES = 2
-    __DEADZONE_RADIUS = 0.05
+    __DEADZONE_RADIUS = 0.025
 
     def __init__(self, map_select=0, speed_trigger=False) -> None:
         self.speed_trigger = speed_trigger
         self.velocity_unit = 1.0
-        self.yaw_unit = 1.0
+        self.yaw_unit = 2.0
 
         # self.update_mappings()
 
@@ -52,8 +52,8 @@ class JoyControl:
             try:
                 speed_val = axes[self.__map["speed"]]
                 angular_val = axes[self.__map["angular"]]
-                dir_lr_val = axes[self.__map["dirLR"]]
-                dir_fb_val = axes[self.__map["dirFB"]]
+                dir_lr_val = axes[self.__map["dirFB"]]
+                dir_fb_val = axes[self.__map["dirLR"]]
 
                 msg = init_high_command()
                 msg.mode = 2
