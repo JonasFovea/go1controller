@@ -1,0 +1,7 @@
+name: "XBOX Wired Controller"
+speed: 5
+angular: 3
+dirLR: 0
+dirFB: 1
+A: 0
+B: 1

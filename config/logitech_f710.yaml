@@ -1,0 +1,7 @@
+name: "Logitech F710 Controller"
+speed: 7
+angular: 3
+dirLR: 0
+dirFB: 1
+A: 1
+B: 2
