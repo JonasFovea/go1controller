@@ -71,7 +71,7 @@ def test():
     counter = 0
 
     while not rospy.is_shutdown():
-        
+
         counter = (counter + 1) % 100
         cmd_msg.mode = 5 if counter >= 50 else 6
 
