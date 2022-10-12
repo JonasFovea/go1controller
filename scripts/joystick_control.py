@@ -138,6 +138,11 @@ def path_dialog() -> int:
             pass
 
 def init_high_command() -> HighCmd:
+    HIGHLEVEL = 0xEE
+    LOWLEVEL = 0xFF
+    TRIGERLEVEL = 0xF0
+    
+
     cmd_msg = HighCmd()
     cmd_msg.head = [0xFE, 0xEF]
     cmd_msg.levelFlag = HIGHLEVEL
