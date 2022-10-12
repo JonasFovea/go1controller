@@ -56,7 +56,7 @@ class JoyControl:
                 dir_fb_val = axes[self.__map["dirFB"]]
 
                 msg = init_high_command()
-                msg.mode = 0
+                msg.mode = 2
 
                 msg.velocity = self.__calc_velocity(self.__check_deadzone(dir_lr_val),
                                                     self.__check_deadzone(dir_fb_val),
