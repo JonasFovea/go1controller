@@ -43,7 +43,7 @@ class JoyControl:
 
         rospy.init_node('joystick_control', anonymous=False)
         rospy.Subscriber("joy", Joy, self.__callback)
-        self.pub = rospy.Publisher('joy_control', HighCmd, queue_size=1)
+        self.pub = rospy.Publisher('high_cmd', HighCmd, queue_size=1)
 
     def __callback(self, joy_data: Joy) -> None:
         if not rospy.is_shutdown():
@@ -141,7 +141,7 @@ def init_high_command() -> HighCmd:
     HIGHLEVEL = 0xEE
     LOWLEVEL = 0xFF
     TRIGERLEVEL = 0xF0
-    
+
 
     cmd_msg = HighCmd()
     cmd_msg.head = [0xFE, 0xEF]
