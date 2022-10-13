@@ -3,5 +3,5 @@
     <arg name="ctrl_level" value="HIGHLEVEL"/>
   </include>
 
-  <node pkg="go1controller" type="joystick_control.py" args="-s 1" respawn="true" name="joystick_controller"/>
+  <node pkg="go1controller" type="joystick_control" respawn="true" name="joystick_controller"/>
 </launch>
