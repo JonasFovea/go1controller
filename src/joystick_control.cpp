@@ -2,6 +2,7 @@
 #include <unitree_legged_msgs/HighCmd.h>
 #include <unitree_legged_sdk/unitree_legged_sdk.h>
 #include <sensor_msgs/Joy.h>
+#include <stdio.h>
 
 using namespace UNITREE_LEGGED_SDK;
 
@@ -86,6 +87,8 @@ void load_layout(int profile, controller* gamepad){
 }
 
 void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
+    printf("joy_callback");
+
     cmd.velocity[0] = msg->axes[gamepad.FB]/gamepad.resolution * linear_speed_unit;
     cmd.velocity[1] = msg->axes[gamepad.LR]/gamepad.resolution * linear_speed_unit;
 
