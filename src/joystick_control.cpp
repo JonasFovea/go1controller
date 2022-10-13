@@ -152,7 +152,7 @@ int main(int argc, char **argv){
 
     sub = nh.subscribe("/joy",1, print_callback);
     pub = nh.advertise<unitree_legged_msgs::HighCmd>("/high_cmd", 1000);
-
+    ros::spin();
     printf("[i] joystick_control publisher and subscriber established\n");
 
     while (ros::ok());
