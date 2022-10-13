@@ -87,7 +87,7 @@ void load_layout(int profile, controller* gamepad){
 }
 
 void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
-    printf("joy_callback\n");
+    printf("[i] joy_callback\n");
 
     cmd.velocity[0] = msg->axes[gamepad.FB]/gamepad.resolution * linear_speed_unit;
     cmd.velocity[1] = msg->axes[gamepad.LR]/gamepad.resolution * linear_speed_unit;
@@ -108,6 +108,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
     cmd.mode = robot_state.mode;
 
     pub.publish(cmd);
+    printf("[i] End of callback\n");
 }
 
 void init_states(){
@@ -145,8 +146,8 @@ int main(int argc, char **argv){
     init_high_command();
     init_states();
 
-    pub = nh.advertise<unitree_legged_msgs::HighCmd>("high_cmd", 1000);
-    sub = nh.subscribe("joy",1, joy_callback);
+    pub = nh.advertise<unitree_legged_msgs::HighCmd>("/high_cmd", 1000);
+    sub = nh.subscribe("/joy",1, joy_callback);
 
     printf("[i] joystick_control publisher and subscriber established\n");
 
