@@ -145,7 +145,7 @@ int main(int argc, char **argv){
 
     ros::NodeHandle nh;
 
-    load_layout(0, &controller);
+    load_layout(0, &gamepad);
     init_high_command();
     init_states();
 
