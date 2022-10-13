@@ -146,8 +146,8 @@ int main(int argc, char **argv){
     init_high_command();
     init_states();
 
-    pub = nh.advertise<unitree_legged_msgs::HighCmd>("/high_cmd", 1000);
     sub = nh.subscribe("/joy",1, joy_callback);
+    pub = nh.advertise<unitree_legged_msgs::HighCmd>("/high_cmd", 1000);
 
     printf("[i] joystick_control publisher and subscriber established\n");
 
