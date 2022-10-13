@@ -77,7 +77,7 @@ void load_layout(int profile, controller* gamepad){
 
             // Settings
             gamepad->invert = 0;
-            gamepad->resolution = 32767.0f;
+            gamepad->resolution = 1.0f;
 
             gamepad->UP = -1;
             gamepad->DOWN = -1;
