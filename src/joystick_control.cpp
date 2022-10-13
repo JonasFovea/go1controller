@@ -139,7 +139,7 @@ int main(int argc, char **argv){
     ros::NodeHandle nh;
 
     init_high_command();
-    init_buttons();
+    init_states();
 
     sub = nh.subscribe("joy",1, joy_callback);
     pub = nh.advertise<unitree_legged_msgs::HighCmd>("high_cmd", 1000);
