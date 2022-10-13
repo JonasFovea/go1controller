@@ -88,8 +88,8 @@ void load_layout(int profile, controller* gamepad){
 
 void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
 //    printf("[i] joy_callback\n");
-    float* axes = msg->axes;
-    printf("%f, %f, %f, %f, %f, %f, %f, %f", axes[0],axes[1],axes[2],axes[3],axes[4],axes[5],axes[6],axes[7])
+
+    printf("%f, %f, %f, %f, %f, %f, %f, %f", msg->axes[0],msg->axes[1],msg->axes[2],msg->axes[3],msg->axes[4],msg->axes[5],msg->axes[6],msg->axes[7])
     printf("FB: %f LR: %f YAW: %f PITCH: %f\n",msg->axes[gamepad.FB], msg->axes[gamepad.LR], msg->axes[gamepad.YAW], msg->axes[gamepad.PITCH]);
     cmd.velocity[0] = ((float) msg->axes[gamepad.FB])/gamepad.resolution * linear_speed_unit;
     cmd.velocity[1] = ((float ) msg->axes[gamepad.LR])/gamepad.resolution * linear_speed_unit;
