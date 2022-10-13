@@ -137,7 +137,7 @@ void init_high_command(){
 }
 
 int main(int argc, char **argv){
-    printf("[i] Started joystick_control");
+    printf("[i] Started joystick_control\n");
     ros::init(argc, argv, "joystick_control");
 
     ros::NodeHandle nh;
@@ -148,9 +148,9 @@ int main(int argc, char **argv){
     pub = nh.advertise<unitree_legged_msgs::HighCmd>("high_cmd", 1000);
     sub = nh.subscribe("joy",1, joy_callback);
 
-    printf("[i] joystick_control publisher and subscriber established");
+    printf("[i] joystick_control publisher and subscriber established\n");
 
     while (ros::ok());
-    printf("[i] Stopped joystick_control");
+    printf("[i] Stopped joystick_control\n");
     return 0;
 }
