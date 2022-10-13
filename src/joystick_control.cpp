@@ -103,7 +103,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
     }
 
     cmd.mode = robot_state.mode;
-    
+
     pub.publish(cmd);
 }
 

@@ -17,6 +17,20 @@ find_package(catkin REQUIRED COMPONENTS
   unitree_legged_msgs
 )
 
+# copied from unitree_legged_real/CMakeLists.txt
+message("-- CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
+if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "x86_64.*")
+    set(ARCH amd64)
+else()
+    set(ARCH arm64)
+endif()
+set(LEGGED_SDK_NAME -pthread libunitree_legged_sdk_${ARCH}.so lcm)
+
+set(EXTRA_LIBS ${LEGGED_SDK_NAME} lcm)
+
+
+set(CMAKE_CXX_FLAGS "-O3 -fPIC")
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -121,9 +135,12 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
+  ~/unitree_legged_sdk/include
 )
+
+link_directories(~/unitree_legged_sdk/lib)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
