@@ -86,6 +86,10 @@ void load_layout(int profile, controller* gamepad){
     }
 }
 
+void print_callback(const sensor_msgs::Joy::ConstPtr &msg){
+    printf("[II] Callback!\n");
+}
+
 void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
     printf("[i] joy_callback\n");
 
@@ -146,7 +150,7 @@ int main(int argc, char **argv){
     init_high_command();
     init_states();
 
-    sub = nh.subscribe("/joy",1, joy_callback);
+    sub = nh.subscribe("/joy",1, print_callback);
     pub = nh.advertise<unitree_legged_msgs::HighCmd>("/high_cmd", 1000);
 
     printf("[i] joystick_control publisher and subscriber established\n");
