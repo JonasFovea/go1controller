@@ -17,7 +17,7 @@ typedef struct controller{
     int RB, LB;
     int RS, LS;
 
-    int resolution;
+    float resolution;
     int invert;
 } controller;
 
@@ -77,7 +77,7 @@ void load_layout(int profile, controller* gamepad){
 
             // Settings
             gamepad->invert = 0;
-            gamepad->resolution = 32767;
+            gamepad->resolution = 32767.0f;
 
             gamepad->UP = -1;
             gamepad->DOWN = -1;
@@ -92,11 +92,11 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
     cmd.velocity[0] = msg->axes[gamepad.FB]/gamepad.resolution * linear_speed_unit;
     cmd.velocity[1] = msg->axes[gamepad.LR]/gamepad.resolution * linear_speed_unit;
 
-    cmd.yawSpeed = msg->axes[gamepad.YAW]/gamepad.resolution * rotational_speed_unit;
-    cmd.euler[1] = msg->axes[gamepad.PITCH]/gamepad.resolution * angle_unit;
+    cmd.yawSpeed =  ((float) msg->axes[gamepad.YAW])/gamepad.resolution * rotational_speed_unit;
+    cmd.euler[1] = ((float ) msg->axes[gamepad.PITCH])/gamepad.resolution * angle_unit;
 
     // Toggle next mode via START button
-    if (msg->axes[gamepad.START]){
+    if (msg->buttons[gamepad.START]){
         if(!robot_state.START_S){
             robot_state.mode = (robot_state.mode + 1) % robot_state.num_modes;
             robot_state.START_S = 1;
