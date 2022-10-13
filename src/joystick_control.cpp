@@ -105,11 +105,11 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             robot_state.mode = (robot_state.mode + 1) % robot_state.num_modes;
             robot_state.START_S = 1;
         }
+        cmd.mode = robot_state.mode;
     } else {
         robot_state.START_S = 0;
     }
-    cmd.mode = robot_state.mode;
-
+    
     // Activate Standing down via RB + A
     if(msg->buttons[gamepad.LB]&& !msg->buttons[gamepad.RB] && msg->buttons[gamepad.A]){
         if (!robot_state.A_S){
