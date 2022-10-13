@@ -114,7 +114,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
     if(msg->buttons[gamepad.LB]&& !msg->buttons[gamepad.RB] && msg->buttons[gamepad.A]){
         if (!robot_state.A_S){
             robot_state.A_S = 1;
-            robot_state.mode = 0
+            robot_state.mode = 0;
             cmd.mode = 5;
         }
     }else{
