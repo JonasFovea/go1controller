@@ -30,6 +30,8 @@ typedef struct states{
 
     int mode;
     int num_modes;
+
+    int standing;
 } states;
 
 unitree_legged_msgs::HighCmd cmd;
@@ -106,8 +108,18 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
     } else {
         robot_state.START_S = 0;
     }
-
     cmd.mode = robot_state.mode;
+
+    // Activate Standing up and down via RB + A
+    if(msg->buttons[gamepad.LB] && msg->buttons[gamepad.A]){
+        if (!robot_state.A_S){
+            robot_state.standing = (robot_state.standing + 1) % 2;
+            robot_state.A_S = 1;
+            cmd.mode = 6 - robot_state.standing;
+        }
+    }else{
+        robot_state.A_S = 0;
+    }
 
     pub.publish(cmd);
 //    printf("[i] End of callback\n");
@@ -118,7 +130,7 @@ void init_states(){
                0,0,0,0,
                0,0,0,
                0,0,0,0,
-               0, 3};
+               0, 3, 0};
 }
 
 void init_high_command(){
@@ -126,6 +138,21 @@ void init_high_command(){
     cmd.head[1] = 0xEF;
     cmd.levelFlag = HIGHLEVEL;
     cmd.mode = 0;
+        // 0. idle, default stand
+        // 1. force stand (controlled by dBodyHeight + ypr)
+        // 2. target velocity walking (controlled by velocity + yawSpeed)
+        // 3. target position walking (controlled by position + ypr[0])
+        // 4. path mode walking (reserve for future release)
+        // 5. position stand down.
+        // 6. position stand up
+        // 7. damping mode
+        // 8. recovery stand
+        // 9. backflip
+        // 10. jumpYaw
+        // 11. straightHand
+        // 12. dance1
+        // 13. dance2
+
     cmd.gaitType = 0;
     cmd.speedLevel = 0;
     cmd.footRaiseHeight = 0;
