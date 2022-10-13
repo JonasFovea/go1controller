@@ -87,10 +87,10 @@ void load_layout(int profile, controller* gamepad){
 }
 
 void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
-    printf("[i] joy_callback\n");
+//    printf("[i] joy_callback\n");
 
-    cmd.velocity[0] = msg->axes[gamepad.FB]/gamepad.resolution * linear_speed_unit;
-    cmd.velocity[1] = msg->axes[gamepad.LR]/gamepad.resolution * linear_speed_unit;
+    cmd.velocity[0] = ((float) msg->axes[gamepad.FB])/gamepad.resolution * linear_speed_unit;
+    cmd.velocity[1] = ((float ) msg->axes[gamepad.LR])/gamepad.resolution * linear_speed_unit;
 
     cmd.yawSpeed =  ((float) msg->axes[gamepad.YAW])/gamepad.resolution * rotational_speed_unit;
     cmd.euler[1] = ((float ) msg->axes[gamepad.PITCH])/gamepad.resolution * angle_unit;
@@ -108,7 +108,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
     cmd.mode = robot_state.mode;
 
     pub.publish(cmd);
-    printf("[i] End of callback\n");
+//    printf("[i] End of callback\n");
 }
 
 void init_states(){
