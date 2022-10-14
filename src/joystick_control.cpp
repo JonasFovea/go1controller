@@ -44,7 +44,7 @@ ros::Publisher pub;
 
 float linear_speed_unit = 1.0f; // m/s
 float rotational_speed_unit = 2.0f; //rad/s
-float angle_unit = 0.17;// rad (~10 deg)
+float angle_unit = 0.52;// rad (~30 deg)
 
 void load_layout(int profile, controller* gamepad){
     switch (profile) {
@@ -109,9 +109,9 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
     } else {
         robot_state.START_S = 0;
     }
-    
+
     // Activate Standing down via RB + A
-    if(msg->buttons[gamepad.LB]&& !msg->buttons[gamepad.RB] && msg->buttons[gamepad.A]){
+    if(msg->buttons[gamepad.LB] && !msg->buttons[gamepad.RB] && msg->buttons[gamepad.A]){
         if (!robot_state.A_S){
             robot_state.A_S = 1;
             robot_state.mode = 0;
