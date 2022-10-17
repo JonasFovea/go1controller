@@ -108,7 +108,7 @@ void load_layout(int profile, controller* gamepad){
 }
 
 void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
-    printf("[i] button update start\n");
+//    printf("[i] button update start\n");
     // Button A
     if (msg->buttons[gamepad.A]){
         buttons.A_T = buttons.A_S ? 0 : 1;
@@ -259,9 +259,9 @@ void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
     else{
         float ax_val = (float) msg->axes[gamepad.UPDOWN];
         if (ax_val != 0.0){
-            buttons.UP_T = buttons.UP_S ? 0 : 1;
+            buttons.UP_T = buttons.UP_S && ax_val > 0.0f ? 0 : 1;
             buttons.UP_S = ax_val > 0.0f ? 1 : 0;
-            buttons.DOWN_T = buttons.DOWN_S  ? 0 : 1;
+            buttons.DOWN_T = buttons.DOWN_S && ax_val < 0.0f ? 0 : 1;
             buttons.DOWN_S = ax_val < 0.0f ? 1 : 0;
         }else{
             buttons.UP_T = 0;
@@ -270,7 +270,7 @@ void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
             buttons.DOWN_S = 0;
         }
     }
-    printf("[i] button update done.\n");
+//    printf("[i] button update done.\n");
 }
 
 void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
@@ -285,42 +285,42 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
     cmd.euler[1] = ((float) msg->axes[gamepad.PITCH])/gamepad.resolution * angle_unit;
 
     update_buttons(msg);
-    printf("[i] checking modes and buttons\n");
+//    printf("[i] checking modes and buttons\n");
     // robot is standing / walking
     if (robot.mode >= 0 && robot.mode <= 2 ){
         // switch
         if (buttons.START_T) {
-            printf("\t[i] start pressed\n");
+//            printf("\t[i] start pressed\n");
             robot.mode = (robot.mode + 1) % robot.num_modes;
             robot.standing =  1;
             cmd.mode = robot.mode;
-            printf("\n[i] switched mode to %i", robot.mode);
+//            printf("\n[i] switched mode to %i\n", robot.mode);
         }
 
         if (buttons.UP_T){
-            printf("\t[i] UP pressed\n");
+//            printf("\t[i] UP pressed\n");
             robot.body_height += 0.02f; // increase by 2cm
             robot.body_height = robot.body_height > max_body_height_delta ? max_body_height_delta : robot.body_height;
             robot.standing = 1;
             cmd.bodyHeight = robot.body_height;
-            printf("\t[i] height increased\n");
+//            printf("\t[i] height increased\n");
         }
 
         if (buttons.DOWN_T){
-            printf("\t[i] DOWN pressed\n");
+//            printf("\t[i] DOWN pressed\n");
             robot.body_height -= 0.02f; // decrease by 2cm
             robot.body_height = robot.body_height < min_body_height_delta ? min_body_height_delta : robot.body_height;
             robot.standing = 1;
             cmd.bodyHeight = robot.body_height;
-            printf("\t[i] height decreased\n");
+//            printf("\t[i] height decreased\n");
         }
 
         if (buttons.LB_S && buttons.A_T){
-            printf("\t[i] LB + A pressed\n");
+//            printf("\t[i] LB + A pressed\n");
             robot.mode = 5;
             robot.standing = 0;
             cmd.mode = robot.mode;
-            printf("\t[i] mode changed to %i\n", robot.mode);
+//            printf("\t[i] mode changed to %i\n", robot.mode);
         }
     }
     // robot is standing down
@@ -390,7 +390,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             }
         }
     }
-    printf("[i] publishing HighCmd\n");
+//    printf("[i] publishing HighCmd\n");
     pub.publish(cmd);
     printf("[i] end of callback\n\n");
 }
