@@ -3,6 +3,7 @@
 #include <unitree_legged_sdk/unitree_legged_sdk.h>
 #include <sensor_msgs/Joy.h>
 #include <stdio.h>
+#include <math.h>
 
 using namespace UNITREE_LEGGED_SDK;
 
@@ -300,7 +301,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
         if (buttons.UP_T){
 //            printf("\t[i] UP pressed\n");
             robot.body_height += 0.02f; // increase by 2cm
-            robot.body_height = robot.body_height > max_body_height_delta ? max_body_height_delta : robot.body_height;
+            robot.body_height = roundf(100 * (robot.body_height > max_body_height_delta ? max_body_height_delta : robot.body_height))/100;
             robot.standing = 1;
             cmd.bodyHeight = robot.body_height;
 //            printf("\t[i] height increased\n");
@@ -309,7 +310,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
         if (buttons.DOWN_T){
 //            printf("\t[i] DOWN pressed\n");
             robot.body_height -= 0.02f; // decrease by 2cm
-            robot.body_height = robot.body_height < min_body_height_delta ? min_body_height_delta : robot.body_height;
+            robot.body_height = roundf(100 * (robot.body_height < min_body_height_delta ? min_body_height_delta : robot.body_height))/100;
             robot.standing = 1;
             cmd.bodyHeight = robot.body_height;
 //            printf("\t[i] height decreased\n");
