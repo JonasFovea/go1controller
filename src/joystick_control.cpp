@@ -21,23 +21,34 @@ typedef struct controller{
     int invert;
 } controller;
 
-typedef struct states{
+typedef struct robot_state{
+    int mode;
+    int num_modes;
+
+    int standing;
+
+    float body_height;
+} robot_state;
+
+typedef struct button_states{
     int A_S, B_S, X_S, Y_S;
     int UP_S, DOWN_S, LEFT_S, RIGHT_S;
     int START_S, SELECT_S, MENU_S;
     int RB_S, LB_S;
     int RS_S, LS_S;
 
-    int mode;
-    int num_modes;
-
-    int standing;
-} states;
+    int A_T, B_T, X_T, Y_T;
+    int UP_T, DOWN_T, LEFT_T, RIGHT_T;
+    int START_T, SELECT_T, MENU_T;
+    int RB_T, LB_T;
+    int RS_T, LS_T;
+} button_states;
 
 unitree_legged_msgs::HighCmd cmd;
 
 controller gamepad;
-states robot_state;
+button_states buttons;
+robot_state robot;
 
 ros::Subscriber sub;
 ros::Publisher pub;
@@ -45,8 +56,20 @@ ros::Publisher pub;
 float linear_speed_unit = 1.0f; // m/s
 float rotational_speed_unit = 2.0f; //rad/s
 float angle_unit = 0.52;// rad (~30 deg)
+float max_body_height_delta = 0.06f; // m
+float min_body_height_delta = -0.28f; // m
 
 void load_layout(int profile, controller* gamepad){
+
+    // disable D-pad Axes/Buttons
+    gamepad->UP = -1;
+    gamepad->DOWN = -1;
+    gamepad->LEFT = -1;
+    gamepad->RIGHT = -1;
+    gamepad->UPDOWN = -1;
+    gamepad->LEFTRIGHT = -1;
+
+
     switch (profile) {
         default: //Logitech Gamepad F310
             // Axis
@@ -80,11 +103,171 @@ void load_layout(int profile, controller* gamepad){
             // Settings
             gamepad->invert = 0;
             gamepad->resolution = 1.0f;
+            break;
+    }
+}
 
-            gamepad->UP = -1;
-            gamepad->DOWN = -1;
-            gamepad->LEFT = -1;
-            gamepad->RIGHT = -1;
+void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
+    // Button A
+    if (msg->buttons[gamepad.A]){
+        buttons.A_T = buttons.A_S ? 0 : 1;
+        buttons.A_S = 1;
+    }else{
+        buttons.A_T = 0;
+        buttons.A_S = 0;
+    }
+
+    // Button B
+    if (msg->buttons[gamepad.B]){
+        buttons.B_T = buttons.B_S ? 0 : 1;
+        buttons.B_S = 1;
+    }else{
+        buttons.B_T = 0;
+        buttons.B_S = 0;
+    }
+
+    // Button X
+    if (msg->buttons[gamepad.X]){
+        buttons.X_T = buttons.X_S ? 0 : 1;
+        buttons.X_S = 1;
+    }else{
+        buttons.X_T = 0;
+        buttons.X_S = 0;
+    }
+
+    // Button Y
+    if (msg->buttons[gamepad.Y]){
+        buttons.Y_T = buttons.Y_S ? 0 : 1;
+        buttons.Y_S = 1;
+    }else{
+        buttons.Y_T = 0;
+        buttons.Y_S = 0;
+    }
+
+    if (msg->buttons[gamepad.RB]){
+        buttons.RB_T =  buttons.RB_S ? 0 : 1;
+        buttons.RB_S = 1;
+    }else{
+        buttons.R_T = 0;
+        buttons.R_S = 0;
+    }
+
+    if (msg->buttons[gamepad.LB]){
+        buttons.LB_T = buttons.LB_S ? 0 : 1;
+        buttons.LB_S = 1;
+    }else{
+        buttons.LB_T = 0;
+        buttons.A_S = 0;
+    }
+
+    if (msg->buttons[gamepad.RS]){
+        buttons.RS_T = buttons.RS_S ? 0 : 1;
+        buttons.RS_S = 1;
+    }else{
+        buttons.RS_T = 0;
+        buttons.RS_S = 0;
+    }
+
+    if (msg->buttons[gamepad.LS]){
+        buttons.LS_T = buttons.LS_S ? 0 : 1;
+        buttons.LS_S = 1;
+    }else{
+        buttons.LS_T = 0;
+        buttons.LS_S = 0;
+    }
+
+    if (msg->buttons[gamepad.START]){
+        buttons.START_T = buttons.START_S ? 0 : 1;
+        buttons.START_S = 1;
+    }else{
+        buttons.START_T = 0;
+        buttons.START_S = 0;
+    }
+
+    if (msg->buttons[gamepad.SELECT]){
+        buttons.SELECT_T = buttons.SELECT_S ? 0 : 1;
+        buttons.SELECT_S = 1;
+    }else{
+        buttons.SELECT_T = 0;
+        buttons.SELECT_S = 0;
+    }
+
+    if (msg->buttons[gamepad.MENU]){
+        buttons.MENU_T = buttons.MENU_S ? 0 : 1;
+        buttons.MENU_S = 1;
+    }else{
+        buttons.MENU_T = 0;
+        buttons.MENU_S = 0;
+    }
+    
+    if (gamepad.LEFTRIGHT == -1) {
+        if (gamepad.LEFT != -1) {
+            if (msg->buttons[gamepad.LEFT]){
+                buttons.LEFT_T = buttons.LEFT_S ? 0 : 1;
+                buttons.LEFT_S = 1;
+            }else{
+                buttons.LEFT_T = 0;
+                buttons.LEFT_S = 0;
+            }
+        }
+        if (gamepad.RIGHT != -1) {
+            if (msg->buttons[gamepad.RIGHT]){
+                buttons.RIGHT_T = buttons.RIGHT_S ? 0 : 1;
+                buttons.RIGHT_S = 1;
+            }else{
+                buttons.RIGHT_T = 0;
+                buttons.RIGHT_S = 0;
+            }
+        }
+    }
+    else{
+        float ax_val = msg.axes[gamepad.LEFTRIGHT];
+        if (ax_val != 0){
+            buttons.LEFT_T = buttons.LEFT_S ? 0 : 1;
+            buttons.LEFT_S = ax_val > 0 ? 1 : 0;
+            buttons.RIGHT_T = buttons.RIGHT_S ? 0 : 1;
+            buttons.RIGHT_S = ax_val < 0 ? 1 : 0;
+        }else{
+            buttons.LEFT_S = 0;
+            buttons.LEFT_T = 0;
+            buttons.RIGHT_S = 0;
+            buttons.RIGHT_T = 0;
+        }
+    }
+
+    if (gamepad.UPDOWN == -1) {
+        if (gamepad.UP != -1) {
+            if (msg->buttons[gamepad.UP]){
+                buttons.UP_T = buttons.UP_S ? 0 : 1;
+                buttons.UP_S = 1;
+            }else{
+                buttons.UP_T = 0;
+                buttons.UP_S = 0;
+            }
+        }
+        if (gamepad.DOWN != -1) {
+            if (msg->buttons[gamepad.DOWN]){
+                buttons.DOWN_T = buttons.DOWN_S ? 0 : 1;
+                buttons.DOWN_S = 1;
+            }else{
+                buttons.DOWN_T = 0;
+                buttons.DOWN_S = 0;
+            }
+        }
+    }
+    else{
+        float ax_val = msg.axes[gamepad.UPDOWN];
+        if (ax_val != 0){
+            buttons.UP_T = buttons.UP_S ? 0 : 1;
+            buttons.UP_S = ax_val > 0 ? 1 : 0;
+            buttons.DOWN_T = buttons.DOWN_S  ? 0 : 1;
+            buttons.DOWN_S = ax_val < 0 ? 1 : 0;
+        }else{
+            buttons.UP_T = 0;
+            buttons.UP_S = 0;
+            buttons.DOWN_T = 0;
+            buttons.DOWN_S = 0;
+        }
     }
 }
 
@@ -93,43 +276,107 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
 
     printf("%f, %f, %f, %f, %f, %f, %f, %f\n", msg->axes[0],msg->axes[1],msg->axes[2],msg->axes[3],msg->axes[4],msg->axes[5],msg->axes[6],msg->axes[7]);
     printf("FB: %f LR: %f YAW: %f PITCH: %f\n\n",msg->axes[gamepad.FB], msg->axes[gamepad.LR], msg->axes[gamepad.YAW], msg->axes[gamepad.PITCH]);
-    cmd.velocity[0] = ((float) msg->axes[gamepad.FB])/gamepad.resolution * linear_speed_unit;
-    cmd.velocity[1] = ((float ) msg->axes[gamepad.LR])/gamepad.resolution * linear_speed_unit;
+    cmd.velocity[0] = msg->axes[gamepad.FB]/gamepad.resolution * linear_speed_unit;
+    cmd.velocity[1] = msg->axes[gamepad.LR]/gamepad.resolution * linear_speed_unit;
 
-    cmd.yawSpeed =  ((float) msg->axes[gamepad.YAW])/gamepad.resolution * rotational_speed_unit;
-    cmd.euler[1] = ((float ) msg->axes[gamepad.PITCH])/gamepad.resolution * angle_unit;
+    cmd.yawSpeed =  msg->axes[gamepad.YAW]/gamepad.resolution * rotational_speed_unit;
+    cmd.euler[1] = msg->axes[gamepad.PITCH]/gamepad.resolution * angle_unit;
 
-    // Toggle next mode via START button
-    if (msg->buttons[gamepad.START]){
-        if(!robot_state.START_S){
-            robot_state.mode = (robot_state.mode + 1) % robot_state.num_modes;
-            robot_state.START_S = 1;
+    update_buttons(msg);
+
+    // robot is standing / walking
+    if (robot.mode >= 0 && robot.mode <= 2 ){
+        // switch
+        if (buttons.START_T) {
+            robot.mode = (robot.mode + 1) % robot.num_modes;
+            cmd.mode = robot.mode;
         }
-        cmd.mode = robot_state.mode;
-    } else {
-        robot_state.START_S = 0;
+
+        if (buttons.UP_T){
+            robot.body_height += 0.02f; // increase by 2cm
+            robot.body_height = robot.body_height > max_body_height_delta ? max_body_height_delta : robot.body_height;
+            cmd.bodyHeight = robot.body_height;
+        }
+
+        if (buttons.DOWN_T){
+            robot.body_height -= 0.02f; // decrease by 2cm
+            robot.body_height = robot.body_height < min_body_height_delta ? min_body_height_delta : robot.body_height;
+            cmd.bodyHeight = robot.body_height;
+        }
+
+        if (buttons.LB && buttons.A_T){
+            robot.mode = 5;
+            robot.standing = 0;
+            cmd.mode = robot.mode;
+        }
     }
 
-    // Activate Standing down via RB + A
-    if(msg->buttons[gamepad.LB] && !msg->buttons[gamepad.RB] && msg->buttons[gamepad.A]){
-        if (!robot_state.A_S){
-            robot_state.A_S = 1;
-            robot_state.mode = 0;
-            cmd.mode = 5;
+    // robot is standing down
+    if (robot.mode == 5){
+        // stand up
+        if (buttons.LB && buttons.A_T || buttons.START_T){
+            robot.mode = 6;
+            robot.standing = 1;
+            cmd.mode = robot.mode;
         }
-    }else{
-        robot_state.A_S = 0;
+        // dampen
+        if (buttons.LB && buttons.B_T){
+            robot.mode = 7;
+            cmd.mode = robot.mode;
+        }
     }
 
-    // Activate Standing down via RB + LB + A
-    if(msg->buttons[gamepad.LB] && msg->buttons[gamepad.RB] && msg->buttons[gamepad.A]){
-        if (!robot_state.A_S){
-            robot_state.A_S = 1;
-            robot_state.mode = 0;
-            cmd.mode = 6;
+    // robot is standing up
+    if (robot.mode == 6){
+        // stand down
+        if (buttons.LB && buttons.A_T){
+            robot.mode = 5;
+            cmd.mode = robot.mode;
         }
-    }else{
-        robot_state.A_S = 0;
+        //dampen
+        if (buttons.LB && buttons.B_T){
+            robot.mode = 7;
+            cmd.mode = robot.mode;
+        }
+        // idle
+        if (buttons.START_T){
+            robot.mode = 0;
+            robot.standing = 1;
+            cmd.mode = robot.mode;
+        }
+    }
+
+    // robot is dampened
+    if (robot.mode == 7){
+        if (buttons.START_T){
+            // idle
+            if (robot.standing){
+                robot.mode = 0;
+                robot.standing = 1;
+                cmd.mode =  robot.mode;
+            }
+            // stand up
+            else {
+                robot.mode = 6;
+                robot.standing = 1;
+                cmd.mode = robot.mode;
+            }
+        }
+
+        if (buttons.LB && buttons.A_T){
+            // stand down
+            if (robot.standing){
+                robot.mode = 5;
+                robot.standing = 1;
+                cmd.mode =  robot.mode;
+            }
+            // stand up
+            else {
+                robot.mode = 6;
+                robot.standing = 1;
+                cmd.mode = robot.mode;
+            }
+        }
     }
 
     pub.publish(cmd);
@@ -137,11 +384,16 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
 }
 
 void init_states(){
-    robot_state = {0, 0,0,0,
+    buttons = {0, 0,0,0,
                0,0,0,0,
                0,0,0,
+               0,0,0, 0,
+               0, 0,0,0,
                0,0,0,0,
-               0, 3, 0};
+               0,0,0,
+               0,0,0, 0};
+
+    robot = {0,0,0, 0.0};
 }
 
 void init_high_command(){
