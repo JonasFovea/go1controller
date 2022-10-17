@@ -221,12 +221,12 @@ void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
         }
     }
     else{
-        float ax_val = msg->axes[gamepad.LEFTRIGHT];
-        if (ax_val != 0){
+        float ax_val = (float) msg->axes[gamepad.LEFTRIGHT];
+        if (ax_val != 0.0){
             buttons.LEFT_T = buttons.LEFT_S ? 0 : 1;
-            buttons.LEFT_S = ax_val > 0 ? 1 : 0;
+            buttons.LEFT_S = ax_val > 0.0f ? 1 : 0;
             buttons.RIGHT_T = buttons.RIGHT_S ? 0 : 1;
-            buttons.RIGHT_S = ax_val < 0 ? 1 : 0;
+            buttons.RIGHT_S = ax_val < 0.0f ? 1 : 0;
         }else{
             buttons.LEFT_S = 0;
             buttons.LEFT_T = 0;
@@ -256,12 +256,12 @@ void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
         }
     }
     else{
-        float ax_val = msg->axes[gamepad.UPDOWN];
-        if (ax_val != 0){
+        float ax_val = (float) msg->axes[gamepad.UPDOWN];
+        if (ax_val != 0.0){
             buttons.UP_T = buttons.UP_S ? 0 : 1;
-            buttons.UP_S = ax_val > 0 ? 1 : 0;
+            buttons.UP_S = ax_val > 0.0f ? 1 : 0;
             buttons.DOWN_T = buttons.DOWN_S  ? 0 : 1;
-            buttons.DOWN_S = ax_val < 0 ? 1 : 0;
+            buttons.DOWN_S = ax_val < 0.0f ? 1 : 0;
         }else{
             buttons.UP_T = 0;
             buttons.UP_S = 0;
