@@ -405,7 +405,7 @@ void init_states(){
                0,0,0,
                0,0,0, 0};
 
-    robot = {0,0,1, 0.0f};
+    robot = {0,3,1, 0.0f};
 }
 
 void init_high_command(){
