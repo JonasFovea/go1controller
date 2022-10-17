@@ -148,8 +148,8 @@ void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
         buttons.RB_T =  buttons.RB_S ? 0 : 1;
         buttons.RB_S = 1;
     }else{
-        buttons.R_T = 0;
-        buttons.R_S = 0;
+        buttons.RB_T = 0;
+        buttons.RB_S = 0;
     }
 
     if (msg->buttons[gamepad.LB]){
@@ -221,7 +221,7 @@ void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
         }
     }
     else{
-        float ax_val = msg.axes[gamepad.LEFTRIGHT];
+        float ax_val = msg->axes[gamepad.LEFTRIGHT];
         if (ax_val != 0){
             buttons.LEFT_T = buttons.LEFT_S ? 0 : 1;
             buttons.LEFT_S = ax_val > 0 ? 1 : 0;
@@ -256,7 +256,7 @@ void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
         }
     }
     else{
-        float ax_val = msg.axes[gamepad.UPDOWN];
+        float ax_val = msg->axes[gamepad.UPDOWN];
         if (ax_val != 0){
             buttons.UP_T = buttons.UP_S ? 0 : 1;
             buttons.UP_S = ax_val > 0 ? 1 : 0;
@@ -304,7 +304,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             cmd.bodyHeight = robot.body_height;
         }
 
-        if (buttons.LB && buttons.A_T){
+        if (buttons.LB_S && buttons.A_T){
             robot.mode = 5;
             robot.standing = 0;
             cmd.mode = robot.mode;
