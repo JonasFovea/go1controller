@@ -314,13 +314,13 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
     // robot is standing down
     if (robot.mode == 5){
         // stand up
-        if (buttons.LB && buttons.A_T || buttons.START_T){
+        if (buttons.LB_S && buttons.A_T || buttons.START_T){
             robot.mode = 6;
             robot.standing = 1;
             cmd.mode = robot.mode;
         }
         // dampen
-        if (buttons.LB && buttons.B_T){
+        if (buttons.LB_S && buttons.B_T){
             robot.mode = 7;
             cmd.mode = robot.mode;
         }
@@ -329,12 +329,12 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
     // robot is standing up
     if (robot.mode == 6){
         // stand down
-        if (buttons.LB && buttons.A_T){
+        if (buttons.LB_S && buttons.A_T){
             robot.mode = 5;
             cmd.mode = robot.mode;
         }
         //dampen
-        if (buttons.LB && buttons.B_T){
+        if (buttons.LB_S && buttons.B_T){
             robot.mode = 7;
             cmd.mode = robot.mode;
         }
@@ -363,7 +363,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             }
         }
 
-        if (buttons.LB && buttons.A_T){
+        if (buttons.LB_S && buttons.A_T){
             // stand down
             if (robot.standing){
                 robot.mode = 5;
