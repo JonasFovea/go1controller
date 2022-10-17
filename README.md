@@ -31,7 +31,6 @@ Make sure a gamepad is connected to the computer. You maybe also have to change 
 
 ## Troubleshooting
 If the robot doesn't move, make sure you are connected via ethernet or Wi-Fi.
-
-Follow [this guide](https://github.com/JonasFovea/praxisphase/wiki/Video-Series-by-Unitree#controlling-unitree-robots-with-unitree_legged_sdk) to ensure the connection.
+Make sure, you can ping `192.168.123.161`.
 
 To change the joystick input device follow [this link](http://wiki.ros.org/joy/Tutorials/ConfiguringALinuxJoystick)
