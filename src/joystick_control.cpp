@@ -270,7 +270,7 @@ void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
             buttons.DOWN_S = 0;
         }
     }
-    printf("[i] button update done.")
+    printf("[i] button update done.");
 }
 
 void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
