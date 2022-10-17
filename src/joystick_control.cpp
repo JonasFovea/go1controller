@@ -317,8 +317,8 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
 
         if (buttons.LB_S && buttons.A_T){
 //            printf("\t[i] LB + A pressed\n");
-            robot.mode = 5;
-            robot.standing = 0;
+            robot.mode = 6;
+            robot.standing = 1;
             cmd.mode = robot.mode;
 //            printf("\t[i] mode changed to %i\n", robot.mode);
         }
@@ -334,6 +334,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
         // dampen
         if (buttons.LB_S && buttons.B_T){
             robot.mode = 7;
+            robot.standing = 0;
             cmd.mode = robot.mode;
         }
     }
@@ -345,12 +346,6 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             robot.standing = 0;
             cmd.mode = robot.mode;
         }
-        //dampen
-        if (buttons.LB_S && buttons.B_T){
-            robot.mode = 7;
-            robot.standing = 0;
-            cmd.mode = robot.mode;
-        }
         // idle
         if (buttons.START_T){
             robot.mode = 0;
@@ -359,29 +354,30 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
         }
     }
     // robot is dampened
-    else if (robot.mode == 7){
-        if (buttons.START_T){
+    else if (robot.mode == 7) {
+        if (buttons.START_T) {
             // stand down
-                robot.mode = 5;
-                robot.standing = 0;
-                cmd.mode =  robot.mode;
-            }
+            robot.mode = 5;
+            robot.standing = 0;
+            cmd.mode = robot.mode;
         }
 
-        if (buttons.LB_S && buttons.A_T){
+
+        if (buttons.LB_S && buttons.A_T) {
             // stand down
-            if (robot.standing){
+            if (robot.standing) {
                 robot.mode = 5;
                 robot.standing = 1;
-                cmd.mode =  robot.mode;
+                cmd.mode = robot.mode;
             }
-            // stand up
+                // stand up
             else {
                 robot.mode = 6;
                 robot.standing = 1;
                 cmd.mode = robot.mode;
             }
         }
+    }
     //    printf("[i] publishing HighCmd\n");
     pub.publish(cmd);
 //    printf("[i] end of callback\n\n");
