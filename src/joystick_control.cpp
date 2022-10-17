@@ -289,18 +289,21 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
         // switch
         if (buttons.START_T) {
             robot.mode = (robot.mode + 1) % robot.num_modes;
+            robot.standing =  1;
             cmd.mode = robot.mode;
         }
 
         if (buttons.UP_T){
             robot.body_height += 0.02f; // increase by 2cm
             robot.body_height = robot.body_height > max_body_height_delta ? max_body_height_delta : robot.body_height;
+            robot.standing = 1;
             cmd.bodyHeight = robot.body_height;
         }
 
         if (buttons.DOWN_T){
             robot.body_height -= 0.02f; // decrease by 2cm
             robot.body_height = robot.body_height < min_body_height_delta ? min_body_height_delta : robot.body_height;
+            robot.standing = 1;
             cmd.bodyHeight = robot.body_height;
         }
 
@@ -331,11 +334,13 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
         // stand down
         if (buttons.LB_S && buttons.A_T){
             robot.mode = 5;
+            robot.standing = 0;
             cmd.mode = robot.mode;
         }
         //dampen
         if (buttons.LB_S && buttons.B_T){
             robot.mode = 7;
+            robot.standing = 1;
             cmd.mode = robot.mode;
         }
         // idle
