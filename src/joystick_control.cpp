@@ -108,6 +108,7 @@ void load_layout(int profile, controller* gamepad){
 }
 
 void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
+    printf("[i] button update start");
     // Button A
     if (msg->buttons[gamepad.A]){
         buttons.A_T = buttons.A_S ? 0 : 1;
@@ -269,6 +270,7 @@ void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
             buttons.DOWN_S = 0;
         }
     }
+    printf("[i] button update done.")
 }
 
 void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
@@ -313,7 +315,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             robot.standing = 0;
             cmd.mode = robot.mode;
         }
-    }
+    }else
 
     // robot is standing down
     if (robot.mode == 5){
@@ -328,7 +330,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             robot.mode = 7;
             cmd.mode = robot.mode;
         }
-    }
+    }else
 
     // robot is standing up
     if (robot.mode == 6){
@@ -350,7 +352,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             robot.standing = 1;
             cmd.mode = robot.mode;
         }
-    }
+    }else
 
     // robot is dampened
     if (robot.mode == 7){
