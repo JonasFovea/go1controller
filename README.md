@@ -18,7 +18,7 @@ rosrun go1controller testHigh.py
 The robot should now change its position every ten seconds.
 
 ### joystick_control
-To run the `joystick_control.py` script you can either use the steps above and replace the script name or run the provided launch file:
+To run the `joystick_control` program you can either use the steps above and replace the script name with `joystick_control` or run the provided launch file:
 ```bash
 roslaunch go1coltroller joystick_control.launch
 ```
