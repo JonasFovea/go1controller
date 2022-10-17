@@ -259,9 +259,9 @@ void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
     else{
         float ax_val = (float) msg->axes[gamepad.UPDOWN];
         if (ax_val != 0.0){
-            buttons.UP_T = buttons.UP_S && ax_val > 0.0f ? 0 : 1;
+            buttons.UP_T = !buttons.UP_S && (ax_val > 0.0f) ? 1 : 0;
             buttons.UP_S = ax_val > 0.0f ? 1 : 0;
-            buttons.DOWN_T = buttons.DOWN_S && ax_val < 0.0f ? 0 : 1;
+            buttons.DOWN_T = !buttons.DOWN_S && (ax_val < 0.0f) ? 1 : 0;
             buttons.DOWN_S = ax_val < 0.0f ? 1 : 0;
         }else{
             buttons.UP_T = 0;
