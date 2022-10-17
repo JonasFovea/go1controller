@@ -108,7 +108,7 @@ void load_layout(int profile, controller* gamepad){
 }
 
 void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
-    printf("[i] button update start");
+    printf("[i] button update start\n");
     // Button A
     if (msg->buttons[gamepad.A]){
         buttons.A_T = buttons.A_S ? 0 : 1;
@@ -270,13 +270,13 @@ void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
             buttons.DOWN_S = 0;
         }
     }
-    printf("[i] button update done.");
+    printf("[i] button update done.\n");
 }
 
 void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
-//    printf("[i] joy_callback\n");
+    printf("[i] joy_callback\n");
 
-    printf("%f, %f, %f, %f, %f, %f, %f, %f\n", msg->axes[0],msg->axes[1],msg->axes[2],msg->axes[3],msg->axes[4],msg->axes[5],msg->axes[6],msg->axes[7]);
+//    printf("%f, %f, %f, %f, %f, %f, %f, %f\n", msg->axes[0],msg->axes[1],msg->axes[2],msg->axes[3],msg->axes[4],msg->axes[5],msg->axes[6],msg->axes[7]);
     printf("FB: %f LR: %f YAW: %f PITCH: %f\n\n",msg->axes[gamepad.FB], msg->axes[gamepad.LR], msg->axes[gamepad.YAW], msg->axes[gamepad.PITCH]);
     cmd.velocity[0] = ((float) msg->axes[gamepad.FB])/gamepad.resolution * linear_speed_unit;
     cmd.velocity[1] = ((float) msg->axes[gamepad.LR])/gamepad.resolution * linear_speed_unit;
@@ -285,7 +285,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
     cmd.euler[1] = ((float) msg->axes[gamepad.PITCH])/gamepad.resolution * angle_unit;
 
     update_buttons(msg);
-
+    printf("[i] checking modes and buttons\n");
     // robot is standing / walking
     if (robot.mode >= 0 && robot.mode <= 2 ){
         // switch
@@ -315,10 +315,9 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             robot.standing = 0;
             cmd.mode = robot.mode;
         }
-    }else
-
+    }
     // robot is standing down
-    if (robot.mode == 5){
+    else if (robot.mode == 5){
         // stand up
         if (buttons.LB_S && buttons.A_T || buttons.START_T){
             robot.mode = 6;
@@ -330,10 +329,9 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             robot.mode = 7;
             cmd.mode = robot.mode;
         }
-    }else
-
+    }
     // robot is standing up
-    if (robot.mode == 6){
+    else if (robot.mode == 6){
         // stand down
         if (buttons.LB_S && buttons.A_T){
             robot.mode = 5;
@@ -352,10 +350,9 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             robot.standing = 1;
             cmd.mode = robot.mode;
         }
-    }else
-
+    }
     // robot is dampened
-    if (robot.mode == 7){
+    else if (robot.mode == 7){
         if (buttons.START_T){
             // idle
             if (robot.standing){
@@ -386,9 +383,9 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             }
         }
     }
-
+    printf("[i] publishing HighCmd\n");
     pub.publish(cmd);
-//    printf("[i] End of callback\n");
+    printf("[i] end of callback\n");
 }
 
 void init_states(){
