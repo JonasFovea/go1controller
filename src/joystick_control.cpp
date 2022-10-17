@@ -291,6 +291,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             robot.mode = (robot.mode + 1) % robot.num_modes;
             robot.standing =  1;
             cmd.mode = robot.mode;
+            printf("[i] switched mode to %i", robot.mode)
         }
 
         if (buttons.UP_T){
@@ -398,7 +399,7 @@ void init_states(){
                0,0,0,
                0,0,0, 0};
 
-    robot = {0,0,1, 0.0};
+    robot = {0,0,1, 0.0f};
 }
 
 void init_high_command(){
