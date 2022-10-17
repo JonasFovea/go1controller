@@ -382,8 +382,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
                 cmd.mode = robot.mode;
             }
         }
-    }
-//    printf("[i] publishing HighCmd\n");
+    //    printf("[i] publishing HighCmd\n");
     pub.publish(cmd);
 //    printf("[i] end of callback\n\n");
 }
