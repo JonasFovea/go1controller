@@ -17,7 +17,7 @@ jobs:
     container:
       image: ros:noetic
       volumes:
-        - ~/go1controller:/root/go1controller
+        - /home/runner/work/go1controller:/root/go1controller
     steps:
       - name: Finish ROS setup
         run: |
