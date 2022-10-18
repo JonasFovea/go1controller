@@ -1,6 +1,7 @@
 name: Go1 Catkin
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
