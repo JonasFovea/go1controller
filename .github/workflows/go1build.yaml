@@ -1,0 +1,9 @@
+name: Go1 Build Catkin
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+    
+    steps:
+      - name: run
+        uses: go1catkin
