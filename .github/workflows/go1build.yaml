@@ -1,3 +1,5 @@
+name: Go1 Build Catkin
+
 on:
   push:
     branches:
@@ -5,10 +7,10 @@ on:
       - dev
   pull_request:
     branches:
-        - main
-        - dev
+      - main
+      - dev
 
-name: Go1 Build Catkin
+
 jobs:
   build:
     runs-on: ubuntu-latest
