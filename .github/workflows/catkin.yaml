@@ -42,27 +42,27 @@ jobs:
           source devel/setup.bash
           echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
           source ~/.bashrc
-      - name: Install SDK dependencies   
-        run: |
-          sudo apt-get install unzip wget
-          sudo apt-get install -y libglib2.0-dev
-          cd
-          wget https://github.com/lcm-proj/lcm/releases/download/v1.4.0/lcm-1.4.0.zip 
-          unzip lcm-1.4.0.zip 
-          mv lcm-1.4.0 lcm
-          rm lcm-1.4.0.zip
-          cd lcm 
-          mkdir build
-          cd build
-          cmake ../
-          make
-          make install
-          cd
-          git clone https://github.com/msgpack/msgpack-c.git
-          cd msgpack-c
-          git checkout cpp_master
-          cmake .
-          sudo cmake --build . --target install
+#      - name: Install SDK dependencies   
+#        run: |
+#          sudo apt-get install unzip wget
+#          sudo apt-get install -y libglib2.0-dev
+#          cd
+#          wget https://github.com/lcm-proj/lcm/releases/download/v1.4.0/lcm-1.4.0.zip 
+#          unzip lcm-1.4.0.zip 
+#          mv lcm-1.4.0 lcm
+#          rm lcm-1.4.0.zip
+#          cd lcm 
+#          mkdir build
+#          cd build
+#          cmake ../
+#          make
+#          make install
+#          cd
+#          git clone https://github.com/msgpack/msgpack-c.git
+#          cd msgpack-c
+#          git checkout cpp_master
+#          cmake .
+#          sudo cmake --build . --target install
       - name: Install SDK
         run: |
           cd
