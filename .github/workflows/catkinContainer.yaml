@@ -22,7 +22,7 @@ jobs:
       - name: Finish ROS setup
         run: |
           apt-get -y update
-          apt-get install git
+          apt-get -y install git
           echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
           source ~/.bashrc
           apt-get install -y python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
@@ -38,7 +38,7 @@ jobs:
 
       - name: Install lcm and libglib
         run: |
-          apt-get install unzip wget
+          apt-get install -y unzip wget
           apt-get install -y libglib2.0-dev
           cd
           wget https://github.com/lcm-proj/lcm/releases/download/v1.4.0/lcm-1.4.0.zip
