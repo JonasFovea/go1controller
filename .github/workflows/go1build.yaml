@@ -1,3 +1,13 @@
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+        - main
+        - dev
+
 name: Go1 Build Catkin
 jobs:
   build:
@@ -6,4 +16,4 @@ jobs:
     
     steps:
       - name: run
-        uses: go1catkin
+        uses: ./.github/workflows/go1catkin
