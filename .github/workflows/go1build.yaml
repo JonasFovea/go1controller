@@ -13,5 +13,8 @@ jobs:
     name: Build
     
     steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - name: run
         uses: ./.github/workflows/go1catkin
