@@ -1,0 +1,5 @@
+name: Go1 Catkin
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
