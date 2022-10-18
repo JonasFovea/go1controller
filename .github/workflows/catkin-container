@@ -1,0 +1,96 @@
+name: Go1 Catkin Container build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    container:
+      image: ros:noetic
+      volumes:
+        - ~/go1controller:~/go1controller
+    steps:
+      - name: Finish ROS setup
+        run: |
+          apt-get -y update
+          apt-get install git
+          echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+          source ~/.bashrc
+          apt-get install -y python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
+          cd
+          source /opt/ros/noetic/setup.bash
+          apt-get -y install python3-catkin-tools
+          mkdir -p ~/catkin_ws/src/
+          cd ~/catkin_ws
+          catkin build
+          source devel/setup.bash
+          echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
+          source ~/.bashrc
+      
+      - name: Install lcm and libglib
+        run: |
+          apt-get install unzip wget
+          apt-get install -y libglib2.0-dev
+          cd
+          wget https://github.com/lcm-proj/lcm/releases/download/v1.4.0/lcm-1.4.0.zip
+          unzip lcm-1.4.0.zip
+          mv lcm-1.4.0 lcm
+          rm lcm-1.4.0.zip
+          cd lcm
+          mkdir build
+          cd build
+          cmake ../
+          make
+          make install
+      
+      - name: Install msgpack
+        run: |
+          cd
+          git clone https://github.com/msgpack/msgpack-c.git
+          cd msgpack-c 
+          git checkout cpp_master
+          cmake .
+          cmake --build . --target install
+      
+      - name: Clone unitree repositories
+        run: |
+          git clone --branch fix https://github.com/JonasFovea/unitree_legged_sdk.git
+          cd ~/catkin_ws/src/
+          git clone --branch chip https://github.com/JonasFovea/unitree_ros_to_real.git
+      
+      - name: Make bashrc entries
+        run: |
+          echo "export ROS_PACKAGE_PATH=~/catkin_ws:\${ROS_PACKAGE_PATH}" >> ~/.bashrc
+          echo "export UNITREE_LEGGED_SDK_PATH=~/unitree_legged_sdk" >> ~/.bashrc
+          echo 'export UNITREE_PLATFORM="amd64"' >> ~/.bashrc
+          echo "export ROS_HOSTNAME=localhost" >> ~/.bashrc
+          echo "export ROS_MASTER_URI=http://\${ROS_HOSTNAME}:11311" >> ~/.bashrc
+          source ~/.bashrc
+          
+      - name: Install SDK
+        run: |
+          cd ~/unitree_legged_sdk
+          mkdir build
+          cd build
+          cmake ../
+          make
+          
+      - name: Build unitree ROS packages
+        run: |
+          cd ~/catkin_ws/
+          source devel/setup.bash
+          catkin build
+          
+          
+          
+        
+    
