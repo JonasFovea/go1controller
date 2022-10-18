@@ -17,4 +17,4 @@ jobs:
         with:
           submodules: recursive
       - name: run
-        uses: ./.github/workflows/go1catkin
+        uses: workflows/go1catkin@v1
