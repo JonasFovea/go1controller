@@ -41,6 +41,8 @@ jobs:
           source devel/setup.bash
           echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
           source ~/.bashrc
+      - name: Install SDK dependencies   
+        run: |
           sudo apt-get install unzip wget
           sudo apt-get install -y libglib2.0-dev
           cd
@@ -60,6 +62,8 @@ jobs:
           git checkout cpp_master
           cmake .
           sudo cmake --build . --target install
+      - name: Install SDK
+        run: |
           cd
           git clone --branch fix https://github.com/JonasFovea/unitree_legged_sdk.git
           cd ~/unitree_legged_sdk
@@ -70,6 +74,8 @@ jobs:
           echo "export UNITREE_LEGGED_SDK_PATH=~/unitree_legged_sdk" >> ~/.bashrc
           echo 'export UNITREE_PLATFORM="amd64"' >> ~/.bashrc
           source ~/.bashrc
+      - name: Install unitree_ros_to_real
+        run: |
           cd ~/catkin_ws/src/
           git clone --branch chip https://github.com/JonasFovea/unitree_ros_to_real.git
           cd ~/catkin_ws
