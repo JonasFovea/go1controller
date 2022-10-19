@@ -364,6 +364,8 @@ void init_high_command(){
     cmd.speedLevel = 0; // 0. default low speed. 1. medium speed 2. high speed. during walking, only respond MODE 3
     cmd.footRaiseHeight = 0; // (unit: m, default: 0.08m), foot up height while walking, delta value
     cmd.bodyHeight = 0; // (unit: m, default: 0.28m), delta value
+    cmd.position[0] = 0;
+    cmd.position[1] = 0;
     cmd.euler[0] = 0;
     cmd.euler[1] = 0;
     cmd.euler[2] = 0;
