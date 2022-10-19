@@ -129,7 +129,7 @@ void load_layout(int profile, controller* gamepad){
             break;
     }
 
-    link_button_pairs()
+    link_button_pairs();
 
 }
 
