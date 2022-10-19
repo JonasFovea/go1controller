@@ -64,7 +64,7 @@ float max_body_height_delta = 0.04f; // m
 float min_body_height_delta = -0.28f; // m
 
 void link_button_pairs(){
-    int* temp_arr = {
+    int* temp_arr[] = {
             &gamepad.A, &buttons.A_S, &buttons.A_T,
             &gamepad.B, &buttons.B_S, &buttons.B_T,
             &gamepad.X, &buttons.X_S, &buttons.X_T,
