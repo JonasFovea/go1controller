@@ -360,10 +360,10 @@ void init_high_command(){
         // 12. dance1
         // 13. dance2
 
-    cmd.gaitType = 0;
-    cmd.speedLevel = 0;
-    cmd.footRaiseHeight = 0;
-    cmd.bodyHeight = 0;
+    cmd.gaitType = 0; // 0.idle  1.trot  2.trot running  3.climb stair  4.trot obstacle
+    cmd.speedLevel = 0; // 0. default low speed. 1. medium speed 2. high speed. during walking, only respond MODE 3
+    cmd.footRaiseHeight = 0; // (unit: m, default: 0.08m), foot up height while walking, delta value
+    cmd.bodyHeight = 0; // (unit: m, default: 0.28m), delta value
     cmd.euler[0] = 0;
     cmd.euler[1] = 0;
     cmd.euler[2] = 0;
