@@ -64,7 +64,7 @@ float max_body_height_delta = 0.04f; // m
 float min_body_height_delta = -0.28f; // m
 
 void link_button_pairs(){
-    button_group_addrs = {
+    int* temp_arr = {
             &gamepad.A, &buttons.A_S, &buttons.A_T,
             &gamepad.B, &buttons.B_S, &buttons.B_T,
             &gamepad.X, &buttons.X_S, &buttons.X_T,
@@ -77,6 +77,9 @@ void link_button_pairs(){
             &gamepad.RS, &buttons.RS_S, &buttons.RS_T,
             &gamepad.LS, &buttons.LS_S, &buttons.LS_T
     };
+    for (int i=0;i<num_button_groups*3;++i){
+        button_group_addrs[i] = temp_arr[i];
+    }
 }
 
 void load_layout(int profile, controller* gamepad){
@@ -227,7 +230,7 @@ void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
     for (int i=0; i<num_button_groups*3; i+=3){
         if (msg->buttons[*button_group_addrs[i]]){
             *button_group_addrs[i+2] = *button_group_addrs[i+1] ? 0 : 1;
-            *button_group_addrs[i+1] = 1
+            *button_group_addrs[i+1] = 1;
         }else{
             *button_group_addrs[i+2] = 0;
             *button_group_addrs[i+1] = 0;
