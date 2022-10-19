@@ -7,6 +7,12 @@
 
 using namespace UNITREE_LEGGED_SDK;
 
+/**
+ * ==========================================================
+ * Struct definitions
+ * ==========================================================
+ */
+
 typedef struct controller{
     int LR, FB, YAW, PITCH;
     int RT, LT;
@@ -45,6 +51,13 @@ typedef struct button_states{
     int RS_T, LS_T;
 } button_states;
 
+
+/**
+ * ==========================================================
+ * Global variables
+ * ==========================================================
+ */
+
 unitree_legged_msgs::HighCmd cmd;
 
 controller gamepad;
@@ -57,11 +70,25 @@ int* button_group_addrs[num_button_groups*3];
 ros::Subscriber sub;
 ros::Publisher pub;
 
-float linear_speed_unit = 1.0f; // m/s
-float rotational_speed_unit = 2.0f; //rad/s
-float angle_unit = 0.52;// rad (~30 deg)
-float max_body_height_delta = 0.04f; // m
-float min_body_height_delta = -0.28f; // m
+/**
+ * ==========================================================
+ * Conversion constants
+ * ==========================================================
+ */
+
+const float linear_speed_unit = 1.0f; // m/s
+const float rotational_speed_unit = 2.0f; //rad/s
+const float angle_unit = 0.52;// rad (~30 deg)
+const float max_body_height_delta = 0.04f; // m
+const float min_body_height_delta = -0.28f; // m
+const float height_step = 0.02f; // m
+
+/**
+ * ==========================================================
+ * Functions
+ * ==========================================================
+ */
+
 
 void link_button_pairs(){
     int* temp_arr[] = {
@@ -133,7 +160,7 @@ void load_layout(int profile, controller* gamepad){
 
 }
 
-void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
+void update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
 
     for (int i=0; i<num_button_groups*3; i+=3){
         if (msg->buttons[*button_group_addrs[i]]){
@@ -243,7 +270,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
 
         if (buttons.UP_T){
 //            printf("\t[i] UP pressed\n");
-            robot.body_height += 0.02f; // increase by 2cm
+            robot.body_height += height_step; // increase by 2cm
             robot.body_height = roundf(100 * (robot.body_height > max_body_height_delta ? max_body_height_delta : robot.body_height))/100;
             robot.standing = 1;
             cmd.bodyHeight = robot.body_height;
@@ -252,7 +279,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
 
         if (buttons.DOWN_T){
 //            printf("\t[i] DOWN pressed\n");
-            robot.body_height -= 0.02f; // decrease by 2cm
+            robot.body_height -= height_step; // decrease by 2cm
             robot.body_height = roundf(100 * (robot.body_height < min_body_height_delta ? min_body_height_delta : robot.body_height))/100;
             robot.standing = 1;
             cmd.bodyHeight = robot.body_height;
@@ -374,6 +401,12 @@ void init_high_command(){
     cmd.yawSpeed = 0.0f;
     cmd.reserve = 0;
 }
+
+/**
+ * ==========================================================
+ * Main function
+ * ==========================================================
+ */
 
 int main(int argc, char **argv){
     printf("[i] Started joystick_control\n");
