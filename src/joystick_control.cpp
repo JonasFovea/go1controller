@@ -51,6 +51,9 @@ controller gamepad;
 button_states buttons;
 robot_state robot;
 
+const int num_button_groups = 11;
+int* button_group_addrs[num_button_groups*3];
+
 ros::Subscriber sub;
 ros::Publisher pub;
 
@@ -59,6 +62,22 @@ float rotational_speed_unit = 2.0f; //rad/s
 float angle_unit = 0.52;// rad (~30 deg)
 float max_body_height_delta = 0.04f; // m
 float min_body_height_delta = -0.28f; // m
+
+void link_button_pairs(){
+    button_group_addrs = {
+            &gamepad.A, &buttons.A_S, &buttons.A_T,
+            &gamepad.B, &buttons.B_S, &buttons.B_T,
+            &gamepad.X, &buttons.X_S, &buttons.X_T,
+            &gamepad.Y, &buttons.Y_S, &buttons.Y_T,
+            &gamepad.START, &buttons.START_S, &buttons.START_T,
+            &gamepad.SELECT, &buttons.SELECT_S, &buttons.SELECT_T,
+            &gamepad.MENU, &buttons.MENU_S, &buttons.MENU_T,
+            &gamepad.RB, &buttons.RB_S, &buttons.RB_T,
+            &gamepad.LB, &buttons.LB_S, &buttons.LB_T,
+            &gamepad.RS, &buttons.RS_S, &buttons.RS_T,
+            &gamepad.LS, &buttons.LS_S, &buttons.LS_T
+    };
+}
 
 void load_layout(int profile, controller* gamepad){
 
@@ -106,100 +125,113 @@ void load_layout(int profile, controller* gamepad){
             gamepad->resolution = 1.0f;
             break;
     }
+
+    link_button_pairs()
+
 }
 
 void  update_buttons(const sensor_msgs::Joy::ConstPtr &msg){
 //    printf("[i] button update start\n");
-    // Button A
-    if (msg->buttons[gamepad.A]){
-        buttons.A_T = buttons.A_S ? 0 : 1;
-        buttons.A_S = 1;
-    }else{
-        buttons.A_T = 0;
-        buttons.A_S = 0;
-    }
+//    // Button A
+//    if (msg->buttons[gamepad.A]){
+//        buttons.A_T = buttons.A_S ? 0 : 1;
+//        buttons.A_S = 1;
+//    }else{
+//        buttons.A_T = 0;
+//        buttons.A_S = 0;
+//    }
+//
+//    // Button B
+//    if (msg->buttons[gamepad.B]){
+//        buttons.B_T = buttons.B_S ? 0 : 1;
+//        buttons.B_S = 1;
+//    }else{
+//        buttons.B_T = 0;
+//        buttons.B_S = 0;
+//    }
+//
+//    // Button X
+//    if (msg->buttons[gamepad.X]){
+//        buttons.X_T = buttons.X_S ? 0 : 1;
+//        buttons.X_S = 1;
+//    }else{
+//        buttons.X_T = 0;
+//        buttons.X_S = 0;
+//    }
+//
+//    // Button Y
+//    if (msg->buttons[gamepad.Y]){
+//        buttons.Y_T = buttons.Y_S ? 0 : 1;
+//        buttons.Y_S = 1;
+//    }else{
+//        buttons.Y_T = 0;
+//        buttons.Y_S = 0;
+//    }
+//
+//    if (msg->buttons[gamepad.RB]){
+//        buttons.RB_T =  buttons.RB_S ? 0 : 1;
+//        buttons.RB_S = 1;
+//    }else{
+//        buttons.RB_T = 0;
+//        buttons.RB_S = 0;
+//    }
+//
+//    if (msg->buttons[gamepad.LB]){
+//        buttons.LB_T = buttons.LB_S ? 0 : 1;
+//        buttons.LB_S = 1;
+//    }else{
+//        buttons.LB_T = 0;
+//        buttons.A_S = 0;
+//    }
+//
+//    if (msg->buttons[gamepad.RS]){
+//        buttons.RS_T = buttons.RS_S ? 0 : 1;
+//        buttons.RS_S = 1;
+//    }else{
+//        buttons.RS_T = 0;
+//        buttons.RS_S = 0;
+//    }
+//
+//    if (msg->buttons[gamepad.LS]){
+//        buttons.LS_T = buttons.LS_S ? 0 : 1;
+//        buttons.LS_S = 1;
+//    }else{
+//        buttons.LS_T = 0;
+//        buttons.LS_S = 0;
+//    }
+//
+//    if (msg->buttons[gamepad.START]){
+//        buttons.START_T = buttons.START_S ? 0 : 1;
+//        buttons.START_S = 1;
+//    }else{
+//        buttons.START_T = 0;
+//        buttons.START_S = 0;
+//    }
+//
+//    if (msg->buttons[gamepad.SELECT]){
+//        buttons.SELECT_T = buttons.SELECT_S ? 0 : 1;
+//        buttons.SELECT_S = 1;
+//    }else{
+//        buttons.SELECT_T = 0;
+//        buttons.SELECT_S = 0;
+//    }
+//
+//    if (msg->buttons[gamepad.MENU]){
+//        buttons.MENU_T = buttons.MENU_S ? 0 : 1;
+//        buttons.MENU_S = 1;
+//    }else{
+//        buttons.MENU_T = 0;
+//        buttons.MENU_S = 0;
+//    }
 
-    // Button B
-    if (msg->buttons[gamepad.B]){
-        buttons.B_T = buttons.B_S ? 0 : 1;
-        buttons.B_S = 1;
-    }else{
-        buttons.B_T = 0;
-        buttons.B_S = 0;
-    }
-
-    // Button X
-    if (msg->buttons[gamepad.X]){
-        buttons.X_T = buttons.X_S ? 0 : 1;
-        buttons.X_S = 1;
-    }else{
-        buttons.X_T = 0;
-        buttons.X_S = 0;
-    }
-
-    // Button Y
-    if (msg->buttons[gamepad.Y]){
-        buttons.Y_T = buttons.Y_S ? 0 : 1;
-        buttons.Y_S = 1;
-    }else{
-        buttons.Y_T = 0;
-        buttons.Y_S = 0;
-    }
-
-    if (msg->buttons[gamepad.RB]){
-        buttons.RB_T =  buttons.RB_S ? 0 : 1;
-        buttons.RB_S = 1;
-    }else{
-        buttons.RB_T = 0;
-        buttons.RB_S = 0;
-    }
-
-    if (msg->buttons[gamepad.LB]){
-        buttons.LB_T = buttons.LB_S ? 0 : 1;
-        buttons.LB_S = 1;
-    }else{
-        buttons.LB_T = 0;
-        buttons.A_S = 0;
-    }
-
-    if (msg->buttons[gamepad.RS]){
-        buttons.RS_T = buttons.RS_S ? 0 : 1;
-        buttons.RS_S = 1;
-    }else{
-        buttons.RS_T = 0;
-        buttons.RS_S = 0;
-    }
-
-    if (msg->buttons[gamepad.LS]){
-        buttons.LS_T = buttons.LS_S ? 0 : 1;
-        buttons.LS_S = 1;
-    }else{
-        buttons.LS_T = 0;
-        buttons.LS_S = 0;
-    }
-
-    if (msg->buttons[gamepad.START]){
-        buttons.START_T = buttons.START_S ? 0 : 1;
-        buttons.START_S = 1;
-    }else{
-        buttons.START_T = 0;
-        buttons.START_S = 0;
-    }
-
-    if (msg->buttons[gamepad.SELECT]){
-        buttons.SELECT_T = buttons.SELECT_S ? 0 : 1;
-        buttons.SELECT_S = 1;
-    }else{
-        buttons.SELECT_T = 0;
-        buttons.SELECT_S = 0;
-    }
-
-    if (msg->buttons[gamepad.MENU]){
-        buttons.MENU_T = buttons.MENU_S ? 0 : 1;
-        buttons.MENU_S = 1;
-    }else{
-        buttons.MENU_T = 0;
-        buttons.MENU_S = 0;
+    for (int i=0; i<num_button_groups*3; i+=3){
+        if (msg->buttons[*button_group_addrs[i]]){
+            *button_group_addrs[i+2] = *button_group_addrs[i+1] ? 0 : 1;
+            *button_group_addrs[i+1] = 1
+        }else{
+            *button_group_addrs[i+2] = 0;
+            *button_group_addrs[i+1] = 0;
+        }
     }
     
     if (gamepad.LEFTRIGHT == -1) {
