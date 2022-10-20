@@ -1,7 +1,7 @@
 <launch>
 
-  <arg name="layout" default="0"/>
-
+  <arg name="layout" default="0" doc="Gamepad layout to load. Default is 0 for Logitech F130."/>
+  
   <include file="$(find unitree_legged_real)/launch/real.launch">
     <arg name="ctrl_level" value="HIGHLEVEL"/>
   </include>
@@ -10,6 +10,6 @@
         type="joystick_control"
         respawn="true"
         name="joystick_controller"
-        args="$(layout)"/>
-  
+        args="$(arg layout)"/>
+
 </launch>
