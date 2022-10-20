@@ -225,6 +225,11 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             robot.gait = (robot.gait + 1) % robot.num_gaits;
             cmd.gaitType = robot.gait;
         }
+
+        if (buttons.SELECT_T){
+            robot.speed = (robot.speed + 1) % robot.num_speeds;
+            cmd.speedLevel = robot.speed;
+        }
     }
     // robot is standing down
     else if (robot.mode == 5){
@@ -340,7 +345,7 @@ void init_high_command(){
 }
 
 void print_robot_state(robot_state *state){
-    printf("[i] Robot state:\n\tMode:\t%s\n\tGait Type:\t%s\n\tSpeed:\t%s\n\n\tStanding:\t%s\n\tBody height:\t%03.2fm\n\n",
+    printf("[i] Robot state:\n\tMode:\t\t%s\n\tGait Type:\t%s\n\t\tSpeed:\t%s\n\n\tStanding:\t%s\n\tBody height:\t%03.2fm\n\n",
            mode_names[state->mode], gait_names[state->gait], speed_names[state->speed], state->standing ? "Up":"Down", state->body_height + 0.28f);
 }
 /**
