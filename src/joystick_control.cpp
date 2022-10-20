@@ -336,7 +336,7 @@ void init_high_command(){
  */
 
 int main(int argc, char **argv){
-    printf("[i] Started joystick_control\n");
+    printf("\n\n\n[i] Started joystick_control\n");
     ros::init(argc, argv, "joystick_control");
 
     ros::NodeHandle nh;
