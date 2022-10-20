@@ -3,6 +3,7 @@
 #include <unitree_legged_sdk/unitree_legged_sdk.h>
 #include <sensor_msgs/Joy.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
 using namespace UNITREE_LEGGED_SDK;
@@ -119,9 +120,10 @@ void load_layout(int profile, controller* gamepad){
     gamepad->UPDOWN = -1;
     gamepad->LEFTRIGHT = -1;
 
-
+    printf("[i] loading gamepad layout number %i\n", profile);
     switch (profile) {
         default: //Logitech Gamepad F310
+            printf("[i] selected default gamepad layout for Logitech F130\n");
             // Axis
             gamepad->FB = 1;
             gamepad->LR = 0;
@@ -414,7 +416,11 @@ int main(int argc, char **argv){
 
     ros::NodeHandle nh;
 
-    load_layout(0, &gamepad);
+    int layout_profile = 0;
+    if (argc == 2){
+        layout_profile = atoi(argv[1]);
+    }
+    load_layout(layout_profile, &gamepad);
     init_high_command();
     init_states();
 
