@@ -26,6 +26,12 @@ typedef struct robot_state{
     int mode;
     int num_modes;
 
+    int gait;
+    int num_gaits;
+
+    int speed;
+    int num_speeds;
+
     int standing;
 
     float body_height;
@@ -78,15 +84,34 @@ const float height_step = 0.02f; // m
 
 /**
  * ==========================================================
+ * String constants
+ * ==========================================================
+ */
+ const char* mode_names[] = {"default stand", "force stand",
+                             "velocity walking", "position walking",
+                             "path walking", "stand down",
+                             "stand up", "damping",
+                             "recovery stand", "backflip",
+                             "jumpYaw", "straightHand",
+                             "dance 1", "dance 2"};
+ const char* gait_names[] = { "idle", "trot", "trot running",
+                              "climb stair", "trot obstacle"};
+ const char * speed_names[] = { "low", "medium", "high", "MODE 3"};
+
+/**
+ * ==========================================================
  * Function declarations
  * ==========================================================
  */
 
-void link_button_pairs();
-void load_layout(int profile, controller* gamepad);
-void update_buttons(const sensor_msgs::Joy::ConstPtr &msg);
-void joy_callback(const sensor_msgs::Joy::ConstPtr &msg);
 void init_states();
 void init_high_command();
+void link_button_pairs();
+void joy_callback(const sensor_msgs::Joy::ConstPtr &msg);
+void load_layout(int profile, controller* gamepad);
+void print_robot_state(robot_state *state);
+void update_buttons(const sensor_msgs::Joy::ConstPtr &msg);
+
+
 
 #endif //JOYSTICK_CONTROL_H

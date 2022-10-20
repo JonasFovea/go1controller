@@ -220,6 +220,11 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             cmd.mode = robot.mode;
 //            printf("\t[i] mode changed to %i\n", robot.mode);
         }
+
+        if (buttons.MENU_T){
+            robot.gait = (robot.gait + 1) % robot.num_gaits;
+            cmd.gaitType = robot.gait;
+        }
     }
     // robot is standing down
     else if (robot.mode == 5){
@@ -277,6 +282,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
         }
     }
     //    printf("[i] publishing HighCmd\n");
+    print_robot_state(&robot)
     pub.publish(cmd);
 //    printf("[i] end of callback\n\n");
 }
@@ -291,7 +297,11 @@ void init_states(){
                0,0,0,
                0,0,0, 0};
 
-    robot = {0,3,1, 0.0f};
+    robot = {0,3,
+             0, 5,
+             0,4,
+             1,
+             0.0f};
 }
 
 void init_high_command(){
@@ -329,6 +339,10 @@ void init_high_command(){
     cmd.reserve = 0;
 }
 
+void print_robot_state(robot_state *state){
+    printf("[i] Robot state:\n\tMode:\t%s\n\tGait Type:\t%s\n\tSpeed:\t%s\n\n\tStanding:\t%s\n\tBody height:\t%03.2fm\n\n",
+           mode_names[state->mode], gait_names[state->gait], speed_names[state->speed], state->standing ? "Up":"Down", state->body_height + 0.28f);
+}
 /**
  * ==========================================================
  * Main function
