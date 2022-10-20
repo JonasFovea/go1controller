@@ -10,6 +10,7 @@
         type="joystick_control"
         respawn="true"
         name="joystick_controller"
+        output="screen"
         args="$(arg layout)"/>
 
 </launch>
