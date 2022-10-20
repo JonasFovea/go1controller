@@ -282,7 +282,7 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
         }
     }
     //    printf("[i] publishing HighCmd\n");
-    print_robot_state(&robot)
+    print_robot_state(&robot);
     pub.publish(cmd);
 //    printf("[i] end of callback\n\n");
 }
