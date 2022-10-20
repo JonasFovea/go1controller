@@ -345,7 +345,7 @@ void init_high_command(){
 }
 
 void print_robot_state(robot_state *state){
-    printf("[i] Robot state:\n\tMode:\t\t%s\n\tGait Type:\t%s\n\t\tSpeed:\t%s\n\n\tStanding:\t%s\n\tBody height:\t%03.2fm\n\n",
+    printf("[i] Robot state:\n\tMode:\t\t%s\n\tGait Type:\t%s\n\tSpeed:\t\t%s\n\n\tStanding:\t%s\n\tBody height:\t%03.2fm\n\n",
            mode_names[state->mode], gait_names[state->gait], speed_names[state->speed], state->standing ? "Up":"Down", state->body_height + 0.28f);
 }
 /**
