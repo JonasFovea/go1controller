@@ -18,9 +18,11 @@ rosrun go1controller testHigh.py
 The robot should now change its position every ten seconds.
 
 ### joystick_control
-To run the `joystick_control` program you can either use the steps above and replace the script name with `joystick_control` or run the provided launch file:
+To run the `joystick_control` program you can either start the translation layer by unitree as shown above 
+and then run `rosrun go1controller joystick_control [gamepad layout number]`
+or run the provided launch file, which also starts the translation layer:
 ```bash
-roslaunch go1coltroller joystick_control.launch
+roslaunch go1coltroller joystick_control.launch [gamepad layout number]
 ```
 
 Then in another terminal start the joystick input:
