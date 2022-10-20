@@ -192,9 +192,11 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             robot.mode = (robot.mode + 1) % robot.num_modes;
             robot.standing =  1;
             cmd.mode = robot.mode;
-            cmd.led[0].r= 0x00;
-            cmd.led[0].g= 0x00;
-            cmd.led[0].b= 0x00;
+            for (int i=0;i<4;++i){
+                cmd.led[i].r= 0x00;
+                cmd.led[i].g= 0x00;
+                cmd.led[i].b= 0x00;
+            }
 //            printf("\n[i] switched mode to %i\n", robot.mode);
         }
 
@@ -236,13 +238,15 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
 
         // Standing movement
         if (robot.mode == 1){
-            cmd.euler[0] = ((float) msg->axes[gamepad.YAW])/gamepad.resolution * angle_unit;
+            cmd.euler[0] = ((float) msg->axes[gamepad.LR])/gamepad.resolution * angle_unit;
             cmd.euler[1] = ((float) msg->axes[gamepad.PITCH])/gamepad.resolution * angle_unit;
-            cmd.euler[2] = ((float) msg->axes[gamepad.LR])/gamepad.resolution * angle_unit;
+            cmd.euler[2] = ((float) msg->axes[gamepad.YAW])/gamepad.resolution * angle_unit;
 
-            cmd.led[0].r= 0xff;
-            cmd.led[0].g= 0x00;
-            cmd.led[0].b= 0x00;
+            for (int i=0;i<4;++i){
+                cmd.led[i].r= 0xff;
+                cmd.led[i].g= 0xff;
+                cmd.led[i].b= 0xff;
+            }
         }
     }
     // robot is standing down
