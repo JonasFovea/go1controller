@@ -91,7 +91,7 @@ const float height_step = 0.02f; // m
                              "velocity walking", "position walking",
                              "path walking", "stand down",
                              "stand up", "damping",
-                             "recovery stand", "backflip",
+                             "recovery stand", "back-flip",
                              "jumpYaw", "straightHand",
                              "dance 1", "dance 2"};
  const char* gait_names[] = { "idle", "trot", "trot running",

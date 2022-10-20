@@ -192,6 +192,10 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
             robot.mode = (robot.mode + 1) % robot.num_modes;
             robot.standing =  1;
             cmd.mode = robot.mode;
+            cmd.led[0] = 0x00;
+            cmd.led[1] = 0x00;
+            cmd.led[2] = 0x00;
+            cmd.led[3] = 0x00;
 //            printf("\n[i] switched mode to %i\n", robot.mode);
         }
 
@@ -229,6 +233,18 @@ void joy_callback(const sensor_msgs::Joy::ConstPtr &msg){
         if (buttons.SELECT_T){
             robot.speed = (robot.speed + 1) % robot.num_speeds;
             cmd.speedLevel = robot.speed;
+        }
+
+        // Standing movement
+        if (robot.mode == 1){
+            cmd.euler[0] = ((float) msg->axes[gamepad.YAW])/gamepad.resolution * angle_unit;
+            cmd.euler[1] = ((float) msg->axes[gamepad.PITCH])/gamepad.resolution * angle_unit;
+            cmd.euler[2] = ((float) msg->axes[gamepad.LR])/gamepad.resolution * angle_unit;
+
+            cmd.led[0] = 0xff;
+            cmd.led[1] = 0x00;
+            cmd.led[2] = 0x00;
+            cmd.led[3] = 0x00;
         }
     }
     // robot is standing down
@@ -323,7 +339,7 @@ void init_high_command(){
         // 6. position stand up
         // 7. damping mode
         // 8. recovery stand
-        // 9. backflip
+        // 9. back-flip
         // 10. jumpYaw
         // 11. straightHand
         // 12. dance1
@@ -341,6 +357,10 @@ void init_high_command(){
     cmd.velocity[0] = 0.0f;
     cmd.velocity[1] = 0.0f;
     cmd.yawSpeed = 0.0f;
+    cmd.led[0] = 0x00;
+    cmd.led[1] = 0x00;
+    cmd.led[2] = 0x00;
+    cmd.led[3] = 0x00;
     cmd.reserve = 0;
 }
 
