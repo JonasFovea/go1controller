@@ -31,5 +31,5 @@ def high_state_listen(state: HighState):
 
 if __name__ == '__main__':
     rospy.init_node('robot_state', anonymous=False)
-    rospy.Subscriber("/HighState", HighState, high_state_listen)
+    rospy.Subscriber("/high_state", HighState, high_state_listen)
     rospy.spin()
