@@ -1,6 +1,11 @@
 # go1controller package
 The `go1controller` package can be used to control the robot via ROS.
-It currently supports testing the connection by cycling between standing and laying down with the `testHigh.py` script and controlling the robot with a gamepad.
+This package contains the following executable ROS nodes:
++ `testHigh.py`: Can be used to test the general connection by cycling between standing and laying down.
++ `joystic_control`: Provides a translation from `sensor_msgs:joy` to `high_cmd` messages to control the robot.
++ `robot_state.py`: Prints out interesting values from the `high_state` topic.
+
+Additionally, this package contains a launch file to start both `unitree_legged_real real.launch` and `joystick_control`. 
 
 ## Usage
 
@@ -30,6 +35,13 @@ Then in another terminal start the joystick input:
 rosrun joy joy_node
 ```
 Make sure a gamepad is connected to the computer. You maybe also have to change the selected device.
+
+### robot_state
+To view selected fields of the received messages on the `high_state`-topic simply run the following:
+```bash
+rosrun go1controller robot_state.py
+```
+
 
 ## Troubleshooting
 If the robot doesn't move, make sure you are connected via ethernet or Wi-Fi.
