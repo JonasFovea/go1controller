@@ -11,7 +11,7 @@ def high_state_listen(state: HighState):
     out += f"Control level:\t{'HIGH LEVEL' if state.levelFlag == 0xEE else 'LOW LEVEL'}\n"
     out += f"Motor states:\n"
     for i in range(12):
-        out += f"\tMotor {i+1} position {state.motorState[i]}\n"
+        out += f"\tMotor {i+1} position {state.motorState[i].q}\n"
     out += "Foot states:\n"
     for i, n in enumerate(["FR", "FL", "RR", "RL"]):
         out += f"\t{n} Foot force: {state.footForce[i]}\n"
