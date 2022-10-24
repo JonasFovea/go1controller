@@ -187,6 +187,7 @@ target_link_libraries(joystick_control ${EXTRA_LIBS} ${catkin_LIBRARIES})
  catkin_install_python(PROGRAMS
    scripts/testHigh.py
    scripts/joystick_control.py
+   scripts/robot_state.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
