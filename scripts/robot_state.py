@@ -12,11 +12,11 @@ def high_state_listen(state: HighState):
 
     out += f"Motor states:\n"
     for i in range(12):
-        out += f"\tMotor {i+1} position {state.motorState[i].q:0.6f}\n"
+        out += f"\tMotor {i+1} position {state.motorState[i].q: 0.6f}\n"
 
     out += "Foot states:\n"
     for i, n in enumerate(["FR", "FL", "RR", "RL"]):
-        out += f"\t{n} Foot force: {state.footForce[i]}\n"
+        out += f"\t{n} Foot force: {state.footForce[i]: 04i}\n"
     out += f"Gait type: {state.gaitType}\n"
     out += f"Position (xyz):\t\t({state.position[0]: 0.5f}, {state.position[1]: 0.5f}, {state.position[2]: 0.5f} )\n"
     out += f"Body height:\t\t {state.bodyHeight: 0.5f}\n"
