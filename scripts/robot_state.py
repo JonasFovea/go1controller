@@ -16,7 +16,7 @@ def high_state_listen(state: HighState):
 
     out += "Foot states:\n"
     for i, n in enumerate(["FR", "FL", "RR", "RL"]):
-        out += f"\t{n} Foot force: {state.footForce[i]: 04d}\n"
+        out += f"\t{n} Foot force: {state.footForce[i]: >4d}\n"
     out += f"Gait type: {state.gaitType}\n"
     out += f"Position (xyz):\t\t({state.position[0]: 0.5f}, {state.position[1]: 0.5f}, {state.position[2]: 0.5f} )\n"
     out += f"Body height:\t\t {state.bodyHeight: 0.5f}\n"
