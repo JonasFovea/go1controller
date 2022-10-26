@@ -20,7 +20,7 @@ def high_state_listen(state: HighState):
     out = "========\tRobot status\t========\n"
 
     out += f"Control level:\t{'HIGH LEVEL' if state.levelFlag == 0xEE else 'LOW LEVEL'}\n"
-    out += f"Mode:\t{MODE_NAMES[state.mode]}\n"
+    out += f"Mode:\t\t{MODE_NAMES[state.mode]}\n"
 
     out += f"Motor states:\n"
     for i in range(12):
@@ -29,7 +29,7 @@ def high_state_listen(state: HighState):
     out += "Foot states:\n"
     for i, n in enumerate(["FR", "FL", "RR", "RL"]):
         out += f"\t{n} Foot force: {state.footForce[i]: >4d}\n"
-    out += f"Gait type: ({state.gaitType}) {GAIT_NAMES[state.gaitType]}\n"
+    out += f"Gait type: \t\t({state.gaitType}) {GAIT_NAMES[state.gaitType]}\n"
     out += f"Position (xyz):\t\t({state.position[0]: 0.5f}, {state.position[1]: 0.5f}, {state.position[2]: 0.5f} )\n"
     out += f"Body height:\t\t {state.bodyHeight: 0.5f}\n"
     out += f"Velocity (xyz):\t\t({state.velocity[0]: 0.5f}, {state.velocity[1]: 0.5f}, {state.velocity[2]: 0.5f} )\n"
