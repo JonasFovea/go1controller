@@ -18,17 +18,17 @@ def high_state_listen(state: HighState):
     for i, n in enumerate(["FR", "FL", "RR", "RL"]):
         out += f"\t{n} Foot force: {state.footForce[i]}\n"
     out += f"Gait type: {state.gaitType}\n"
-    out += f"Position (xyz): ({state.position[0]:0.3f}, {state.position[1]:0.3f}, {state.position[2]:0.3f})\n"
-    out += f"Body height: {state.bodyHeight:0.4f}\n"
-    out += f"Velocity (xyz): ({state.velocity[0]:0.5f}, {state.velocity[1]:0.5f}, {state.velocity[2]:0.5f})\n"
-    out += f"Yaw speed: {state.yawSpeed:0.5f}\n"
+    out += f"Position (xyz):\t\t({state.position[0]:0.3f}, {state.position[1]:0.3f}, {state.position[2]:0.3f})\n"
+    out += f"Body height:\t\t{state.bodyHeight:0.4f}\n"
+    out += f"Velocity (xyz):\t\t({state.velocity[0]:0.5f}, {state.velocity[1]:0.5f}, {state.velocity[2]:0.5f})\n"
+    out += f"Yaw speed:\t\t\t{state.yawSpeed:0.5f}\n"
 
-    out += f"Acceleration (xyz): ({state.imu.accelerometer[0]:0.5f}, " \
+    out += f"Acceleration (xyz):\t({state.imu.accelerometer[0]:0.5f}, " \
            f"{state.imu.accelerometer[1]:0.5f}, {state.imu.accelerometer[2]:0.5f})\n "
-    out += f"Gyroscope (xyz): ({state.imu.gyroscope[0]:0.5f}, " \
+    out += f"Gyroscope (xyz):\t({state.imu.gyroscope[0]:0.5f}, " \
            f"{state.imu.gyroscope[1]:0.5f}, {state.imu.gyroscope[2]:0.5f})\n "
 
-    out += f"Orientation (rpy): ({state.imu.rpy[0]:0.5f}, {state.imu.rpy[1]:0.5f}, {state.imu.rpy[2]:0.5f})\n"
+    out += f"Orientation (rpy):\t({state.imu.rpy[0]:0.5f}, {state.imu.rpy[1]:0.5f}, {state.imu.rpy[2]:0.5f})\n"
 
     out += "===================================="
     os.system("clear")
