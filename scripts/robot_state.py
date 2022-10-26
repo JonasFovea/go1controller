@@ -20,7 +20,7 @@ def high_state_listen(state: HighState):
     out = "========\tRobot status\t========\n"
 
     out += f"Control level:\t{'HIGH LEVEL' if state.levelFlag == 0xEE else 'LOW LEVEL'}\n"
-    out += f"Mode:\t\t{MODE_NAMES[state.mode]}\n"
+    # out += f"Mode:\t\t{MODE_NAMES[state.mode]}\n"
 
     out += f"Motor states:\n"
     for i in range(12):
