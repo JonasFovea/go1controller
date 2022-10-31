@@ -158,7 +158,7 @@ link_directories(~/unitree_legged_sdk/lib)
 # add_executable(${PROJECT_NAME}_node src/go1controller_node.cpp)
 add_executable(
     joystick_control src/joystick_control.cpp
-    state_to_tf2 src/highstate_to_tf2.cpp
+    highstate_to_tf2 src/highstate_to_tf2.cpp
 )
 
 ## Rename C++ executable without prefix
@@ -172,7 +172,7 @@ add_executable(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(
     joystick_control ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS}
-    state_tf2 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS}
+    highstate_tf2 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS}
 )
 
 ## Specify libraries to link a library or executable target against
@@ -181,7 +181,7 @@ add_dependencies(
 # )
 target_link_libraries(
     joystick_control ${EXTRA_LIBS} ${catkin_LIBRARIES}
-    state_to_tf2 ${EXTRA_LIBS} ${catkin_LIBRARIES}
+    highstate_to_tf2 ${EXTRA_LIBS} ${catkin_LIBRARIES}
 )
 
 #############
