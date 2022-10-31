@@ -143,9 +143,9 @@ include_directories(
 link_directories(~/unitree_legged_sdk/lib)
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/go1controller.cpp
-# )
+ add_library(${PROJECT_NAME}
+   src/${PROJECT_NAME}/walking_lib.cpp
+ )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
