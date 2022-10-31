@@ -3,7 +3,7 @@
 void init_high_cmd(){
     cmd.head[0] = 0xFE;
     cmd.head[1] = 0xEF;
-    cmd.levelFlag = HIGHLEVEL;
+    cmd.levelFlag = UNITREE_LEGGED_SDK::HIGHLEVEL;
     cmd.mode = IDLE_M;
     cmd.gaitType = IDLE_G;
     cmd.speedLevel = LOW_S;
