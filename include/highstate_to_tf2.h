@@ -14,6 +14,6 @@ geometry_msgs::TransformStamped foot_transform;
 
 const char* feet[] = {"FR", "FL", "RR", "RL"};
 
-void state_callback(const unitree_legged_msgs::HighState::ConstPtr &state);
+void state_callback(const unitree_legged_msgs::HighState);
 
 #endif  // HIGHSTATE_TO_TF2_H
