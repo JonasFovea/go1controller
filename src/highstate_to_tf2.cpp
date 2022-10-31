@@ -10,7 +10,7 @@ void state_callback(const unitree_legged_msgs::HighState::ConstPtr &state){
     go1_transform.transform.translation.z = state.position[2];
 
     tf2::Quaternion q;
-    q.setRPY(state.euler[0],state.euler[1],state.euler[2]);
+    q.setRPY(0, 0, 0);
     go1_transform.transform.rotation.x = q.x();
     go1_transform.transform.rotation.y = q.y();
     go1_transform.transform.rotation.z = q.z();

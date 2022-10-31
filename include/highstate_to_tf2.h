@@ -12,7 +12,7 @@ tf2_ros::TransformBroadcaster tfb;
 geometry_msgs::TransformStamped go1_transform;
 geometry_msgs::TransformStamped foot_transform;
 
-const char*[] feet = {"FR", "FL", "RR", "RL"};
+const char* feet[] = {"FR", "FL", "RR", "RL"};
 
 void state_callback(const unitree_legged_msgs::HighState::ConstPtr &state);
 
