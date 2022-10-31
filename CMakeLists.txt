@@ -144,7 +144,7 @@ link_directories(~/unitree_legged_sdk/lib)
 
 ## Declare a C++ library
  add_library(${PROJECT_NAME}
-   src/${PROJECT_NAME}/walking_lib.cpp
+   src/walking_lib.cpp
  )
 
 ## Add cmake target dependencies of the library
