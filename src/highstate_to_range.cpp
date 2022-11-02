@@ -2,6 +2,7 @@
 
 void state_callback(const unitree_legged_msgs::HighState& state){
     for (int i=0; i<3; ++i){
+        msg.header.frame_id = "go1";
         msg.range = state.rangeObstacle[i];
         pubs[i].publish(msg);
     }
