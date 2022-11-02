@@ -40,16 +40,12 @@ void state_callback(const unitree_legged_msgs::HighState& state){
 
 }
 
-void init_ros(int argc, char** argv){
-    ros::init(argc, argv, "high2tf2");
-    ros::NodeHandle nh;
-    sub = nh.subscribe("/high_state",1, state_callback);
-    tfb = new tf2_ros::TransformBroadcaster();
-}
-
 int main(int argc, char **argv){
     printf("\n\n\n[i] started highstate_to_tf2\n");
-//    init_ros(argc, argv);
-
+    ros::init(argc, argv, "high2tf2");
+    ros::NodeHandle nh;
+    
+    tfb = new tf2_ros::TransformBroadcaster();
+    sub = nh.subscribe("/high_state",1, state_callback);
     printf("[i] ended highstate_to_tf2\n");
 }
