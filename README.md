@@ -4,6 +4,8 @@ This package contains the following executable ROS nodes:
 + `testHigh.py`: Can be used to test the general connection by cycling between standing and laying down.
 + `joystic_control`: Provides a translation from `sensor_msgs:joy` to `high_cmd` messages to control the robot.
 + `robot_state.py`: Prints out interesting values from the `high_state` topic.
++ `highstate_to_tf2`: Converts the HighState messages to tf2 messages to display the robot and its feet in their respective positions  
++ `highstate_to_imu`: Converts the HighState messages to imu messages to display the robots orientation and acceleration
 
 Additionally, this package contains a launch file to start both `unitree_legged_real real.launch` and `joystick_control`. 
 
@@ -41,6 +43,30 @@ To view selected fields of the received messages on the `high_state`-topic simpl
 ```bash
 rosrun go1controller robot_state.py
 ```
+
+### highstate_to_tf2
+To use the positional data in RViz execute the following in one terminal:
+```bash
+rosrun go1controller highstate_to_tf2
+```
+If not already done, start RViz in another terminal:
+```bash
+rviz
+```
+By clicking in the "Add" button in the bottom left corner and selecting "tf" from the list, you can add the transform view to your window.
+Make sure to set the `Fixed Frame` in the global options to "world" (this option only appears, if data was published on the `/tf` topic).
+
+### highstate_to_imu
+To use the imu data in RViz execute the following in one terminal:
+```bash
+rosrun go1controller highstate_to_imu
+```
+If not already done, start RViz in another terminal:
+```bash
+rviz
+```
+By clicking in the "Add" button in the bottom left corner and selecting "imu" from the list, you can add the imu view to your window.
+
 
 
 ## Troubleshooting
