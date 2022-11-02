@@ -35,7 +35,6 @@ int main(int argc, char** argv){
     transformStamped.transform.translation.x = -0.06;
     transformStamped.transform.translation.y = 0.10;
     transformStamped.transform.translation.z = 0.0;
-    tf2::Quaternion q;
     q.setRPY(0, 0, 1.5708f);
     transformStamped.transform.rotation.x = q.x();
     transformStamped.transform.rotation.y = q.y();
@@ -49,7 +48,6 @@ int main(int argc, char** argv){
     transformStamped.transform.translation.x = -0.06;
     transformStamped.transform.translation.y = -0.10;
     transformStamped.transform.translation.z = 0.0;
-    tf2::Quaternion q;
     q.setRPY(0, 0, -1.5708f);
     transformStamped.transform.rotation.x = q.x();
     transformStamped.transform.rotation.y = q.y();
