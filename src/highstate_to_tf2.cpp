@@ -17,7 +17,7 @@ void state_callback(const unitree_legged_msgs::HighState& state){
     go1_transform.transform.rotation.w = q.w();
     
     go1_transform.header.stamp = ros::Time::now();
-    tfb.sendTransform(go1_transform);
+    tfb->sendTransform(go1_transform);
 
     for (int i=0; i<4;++i){
         foot_transform.header.frame_id = "go1";
@@ -35,20 +35,16 @@ void state_callback(const unitree_legged_msgs::HighState& state){
         foot_transform.transform.rotation.w = q.w();
 
         foot_transform.header.stamp = ros::Time::now();
-        tfb.sendTransform(foot_transform);
+        tfb->sendTransform(foot_transform);
     }
 
 }
 
 void init_ros(int argc, char** argv){
-    printf("[ii] before ros::init()\n");
     ros::init(argc, argv, "high2tf2");
-    printf("[ii] after ros::init()\n");
     ros::NodeHandle nh;
-    printf("[ii] after NodeHandle\n");
-
     sub = nh.subscribe("/high_state",1, state_callback);
-    printf("[ii] after subscribe\n");
+    tfb = new tf2_ros::TransformBroadcaster();
 }
 
 int main(int argc, char **argv){
