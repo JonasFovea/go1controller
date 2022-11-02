@@ -10,7 +10,7 @@
 
 ros::Subscriber sub;
 ros::Publisher pub;
-sensor_msgs::imu msg;
+sensor_msgs::Imu msg;
 
 void state_callback(const unitree_legged_msgs::HighState& state);
 
