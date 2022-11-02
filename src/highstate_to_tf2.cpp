@@ -53,5 +53,7 @@ void init_ros(int argc, char** argv){
 
 int main(int argc, char **argv){
     printf("\n\n\n[i] started highstate_to_tf2\n");
-    init_ros(argc, argv);
+//    init_ros(argc, argv);
+
+    printf("[i] ended highstate_to_tf2\n");
 }
