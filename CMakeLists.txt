@@ -144,9 +144,9 @@ include_directories(
 link_directories(~/unitree_legged_sdk/lib)
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/walking_lib.cpp
-# )
+ add_library(${PROJECT_NAME}
+   src/walking_lib.cpp
+ )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -190,7 +190,7 @@ target_link_libraries(highstate_to_tf2 ${EXTRA_LIBS} ${catkin_LIBRARIES})
 ## in contrast to setup.py, you can choose the destination
  catkin_install_python(PROGRAMS
    scripts/testHigh.py
-#   scripts/joystick_control.py
+   scripts/joystick_control.py
    scripts/robot_state.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
