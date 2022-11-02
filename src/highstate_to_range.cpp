@@ -17,7 +17,7 @@ int main(int argc, char** argv){
     geometry_msgs::TransformStamped transformStamped;
 
     transformStamped.header.frame_id = "go1";
-    transformStamped.child_frame_id = "go1/front";
+    transformStamped.child_frame_id = "go1_front";
     transformStamped.transform.translation.x = 0.30;
     transformStamped.transform.translation.y = 0.0;
     transformStamped.transform.translation.z = 0.0;
@@ -31,7 +31,7 @@ int main(int argc, char** argv){
     tfb.sendTransform(transformStamped);
 
     transformStamped.header.frame_id = "go1";
-    transformStamped.child_frame_id = "go1/left";
+    transformStamped.child_frame_id = "go1_left";
     transformStamped.transform.translation.x = -0.06;
     transformStamped.transform.translation.y = 0.10;
     transformStamped.transform.translation.z = 0.0;
@@ -44,7 +44,7 @@ int main(int argc, char** argv){
     tfb.sendTransform(transformStamped);
 
     transformStamped.header.frame_id = "go1";
-    transformStamped.child_frame_id = "go1/right";
+    transformStamped.child_frame_id = "go1_right";
     transformStamped.transform.translation.x = -0.06;
     transformStamped.transform.translation.y = -0.10;
     transformStamped.transform.translation.z = 0.0;
