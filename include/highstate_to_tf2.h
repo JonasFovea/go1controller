@@ -5,6 +5,10 @@
 #include <tf2_ros/transform_broadcaster.h>
 #include <tf2/LinearMath/Quaternion.h>
 
+#include <geometry_msgs/Vector3.h>
+#include <geometry_msgs/Quaternion.h>
+#include <sensor_msgs/Imu.h>
+
 #include <unitree_legged_msgs/HighState.h>
 
 ros::Subscriber sub;
