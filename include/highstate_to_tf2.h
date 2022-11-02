@@ -8,7 +8,7 @@
 #include <unitree_legged_msgs/HighState.h>
 
 ros::Subscriber sub;
-tf2_ros::TransformBroadcaster tfb;
+tf2_ros::TransformBroadcaster* tfb;
 geometry_msgs::TransformStamped go1_transform;
 geometry_msgs::TransformStamped foot_transform;
 
