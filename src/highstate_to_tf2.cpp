@@ -44,8 +44,9 @@ int main(int argc, char **argv){
     printf("\n\n\n[i] started highstate_to_tf2\n");
     ros::init(argc, argv, "high2tf2");
     ros::NodeHandle nh;
-    
+
     tfb = new tf2_ros::TransformBroadcaster();
     sub = nh.subscribe("/high_state",1, state_callback);
+    ros::spin();
     printf("[i] ended highstate_to_tf2\n");
 }
