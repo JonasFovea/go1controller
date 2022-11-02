@@ -15,9 +15,9 @@ int main(int argc, char** argv){
 
     msg.radiation_type = 0;
     if (argc==4) {
-        msg.field_of_view = atof(argv[0]);
-        msg.min_range = atof(argv[1]);
-        msg.max_range = atof(argv[2]);
+        msg.field_of_view = atof(argv[1]);
+        msg.min_range = atof(argv[2]);
+        msg.max_range = atof(argv[3]);
     }else{
         msg.field_of_view = 1.2f;
         msg.min_range = 0.1f;
