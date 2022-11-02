@@ -21,8 +21,8 @@ int main(int argc, char** argv){
     printf("\n\n\n[i] started highstate_to_imu\n");
     ros::init(argc, argv, "high2imu");
     ros::NodeHandle nh;
-    
-    pub = nh.advertise<geometry_msgs::Imu>("/imu", 1000);
+
+    pub = nh.advertise<sensor_msgs::Imu>("/imu", 1000);
     sub = nh.subscribe("/high_state",1, state_callback);
     ros::spin();
     printf("[i] ended highstate_to_imu\n");
