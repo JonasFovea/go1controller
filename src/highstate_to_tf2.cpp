@@ -19,7 +19,7 @@ void state_callback(const unitree_legged_msgs::HighState& state){
     go1_transform.header.stamp = ros::Time::now();
     tfb->sendTransform(go1_transform);
 
-    for (int i=0; i<4;++i){
+    for (int i=0; i<4; ++i){
         foot_transform.header.frame_id = "go1";
         foot_transform.child_frame_id = feet[i];
 
@@ -28,7 +28,7 @@ void state_callback(const unitree_legged_msgs::HighState& state){
         foot_transform.transform.translation.z = state.footPosition2Body[i].z;
 
         tf2::Quaternion q0;
-        q.setRPY(0, 0, 0);
+        q0.setRPY(0, 0, 0);
         foot_transform.transform.rotation.x = q0.x();
         foot_transform.transform.rotation.y = q0.y();
         foot_transform.transform.rotation.z = q0.z();
