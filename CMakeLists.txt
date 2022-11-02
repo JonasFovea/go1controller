@@ -160,7 +160,7 @@ link_directories(~/unitree_legged_sdk/lib)
 add_executable(joystick_control src/joystick_control.cpp)
 add_executable(highstate_to_tf2 src/highstate_to_tf2.cpp)
 add_executable(highstate_to_imu src/highstate_to_imu.cpp)
-add_executable(highstate_to_imu src/highstate_to_range.cpp)
+add_executable(highstate_to_range src/highstate_to_range.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
