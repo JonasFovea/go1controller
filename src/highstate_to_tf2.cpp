@@ -42,8 +42,12 @@ void state_callback(const unitree_legged_msgs::HighState& state){
 
 
 int main(int argc, char** argv){
+    printf("[ii] before ros::init()\n");
     ros::init(argc, argv, "high2tf2");
+    printf("[ii] after ros::init()\n");
     ros::NodeHandle nh;
+    printf("[ii] after NodeHandle\n");
 
     sub = nh.subscribe("/high_state",1, state_callback);
+    printf("[ii] after subscribe\n");
 }
