@@ -25,7 +25,7 @@ int main(int argc, char** argv){
     }
 
     for (int i = 0; i < 3; ++i) {
-        pubs[i] = nh.advertise<sensor_msgs::Imu>("/range/" + (std::string) sensors[i], 1000);
+        pubs[i] = nh.advertise<sensor_msgs::Range>("/range/" + (std::string) sensors[i], 1000);
     }
 
     sub = nh.subscribe("/high_state", 1, state_callback);
