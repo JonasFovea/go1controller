@@ -15,6 +15,7 @@ ros::Subscriber sub;
 tf2_ros::TransformBroadcaster* tfb;
 geometry_msgs::TransformStamped go1_transform;
 geometry_msgs::TransformStamped foot_transform;
+geometry_msgs::TransformStamped sensor_transform;
 
 const char* feet[] = {"FR", "FL", "RR", "RL"};
 
