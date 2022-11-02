@@ -42,7 +42,7 @@ void state_callback(const unitree_legged_msgs::HighState& state){
 
 
 int main(int argc, char** argv){
-    ros::init(argc, argv, "highstate_to_tf2");
+    ros::init(argc, argv, "high2tf2");
     ros::NodeHandle nh;
 
     sub = nh.subscribe("/high_state",1, state_callback);
