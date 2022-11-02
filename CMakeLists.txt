@@ -159,6 +159,7 @@ link_directories(~/unitree_legged_sdk/lib)
 # add_executable(${PROJECT_NAME}_node src/go1controller_node.cpp)
 add_executable(joystick_control src/joystick_control.cpp)
 add_executable(highstate_to_tf2 src/highstate_to_tf2.cpp)
+add_executable(highstate_to_imu src/highstate_to_imu.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -171,6 +172,7 @@ add_executable(highstate_to_tf2 src/highstate_to_tf2.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(joystick_control ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(highstate_to_tf2 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(highstate_to_imu ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
@@ -178,6 +180,7 @@ add_dependencies(highstate_to_tf2 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_E
 # )
 target_link_libraries(joystick_control ${EXTRA_LIBS} ${catkin_LIBRARIES})
 target_link_libraries(highstate_to_tf2 ${EXTRA_LIBS} ${catkin_LIBRARIES})
+target_link_libraries(highstate_to_imu ${EXTRA_LIBS} ${catkin_LIBRARIES})
 
 #############
 ## Install ##
