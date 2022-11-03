@@ -6,6 +6,7 @@ This package contains the following executable ROS nodes:
 + `robot_state.py`: Prints out interesting values from the `high_state` topic.
 + `highstate_to_tf2`: Converts the HighState messages to tf2 messages to display the robot and its feet in their respective positions  
 + `highstate_to_imu`: Converts the HighState messages to imu messages to display the robots orientation and acceleration
++ `highstate_to_range`: Converts the HighState messages to range messages to display the measured ranges of the three ultrasonic sensors
 
 Additionally, this package contains a launch file to start both `unitree_legged_real real.launch` and `joystick_control`. 
 
@@ -67,6 +68,17 @@ rviz
 ```
 By clicking in the "Add" button in the bottom left corner and selecting "imu" from the list, you can add the imu view to your window.
 
+### highstate_to_range
+To use the range data in RViz execute the following in one terminal:
+```bash
+rosrun go1controller highstate_to_range
+```
+If not already done, start RViz in another terminal:
+```bash
+rviz
+```
+By clicking in the "Add" button in the bottom left corner and selecting "Range" from the list, you can add the Range view to your window.
+Since the robot has three ultrasonic sensors, you have to add all three of them and then choose each of the three topics once.
 
 
 ## Troubleshooting
