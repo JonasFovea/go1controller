@@ -15,6 +15,11 @@ VelStopF = 16000.0
 PMSM = 0x0A
 BRAKE = 0x00
 
+target_pose = [-0.28, 1.12, -2.70,
+               0.28, 1.12, -2.70,
+               -0.28, 1.12, -2.70,
+               -0.28, 1.12, -2.70]
+
 counter = 0
 samples = []
 
@@ -24,9 +29,9 @@ def init_low_command() -> LowCmd:
     cmd_msg.head = [0xFE, 0xEF]
     cmd_msg.levelFlag = LOWLEVEL
 
-    for mcmd in cmd_msg.motorCmd:
+    for mcmd, pos in zip(cmd_msg.motorCmd, target_pose):
         mcmd.mode = PMSM
-        mcmd.q = 0
+        mcmd.q = pos
         mcmd.dq = 0
         mcmd.tau = 0
         mcmd.Kp = 50.0
