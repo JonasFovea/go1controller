@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import math
+
 import rospy
 from go1_legged_msgs.msg import LowCmd
 from go1_legged_msgs.msg import LowState
@@ -23,32 +25,63 @@ target_pose = [-0.28, 1.12, -2.70,
 counter = 0
 samples = []
 
+FR_0 = 0
+FR_1 = 1
+FR_2 = 2
+
+FL_0 = 3
+FL_1 = 4
+FL_2 = 5
+
+RR_0 = 6
+RR_1 = 7
+RR_2 = 8
+
+RL_0 = 9
+RL_1 = 10
+RL_2 = 11
+
 
 def init_low_command() -> LowCmd:
     cmd_msg = LowCmd()
     cmd_msg.head = [0xFE, 0xEF]
     cmd_msg.levelFlag = LOWLEVEL
 
-    for mcmd, pos in zip(cmd_msg.motorCmd, target_pose):
+    for mcmd in cmd_msg.motorCmd:
         mcmd.mode = PMSM
-        mcmd.q = pos
-        mcmd.dq = 0
+        mcmd.q = PosStopF
+        mcmd.dq = VelStopF
         mcmd.tau = 0
-        mcmd.Kp = 1.0
-        mcmd.Kd = 5.0
-
+        mcmd.Kp = 0
+        mcmd.Kd = 0
+    print(f"Initialized low command:\n{cmd_msg}")
     return cmd_msg
 
 
-def set_motor_pos_step() -> MotorCmd:
-    mcmd = MotorCmd()
-    mcmd.mode = PMSM
-    mcmd.q = PosStopF
-    mcmd.dq = 0
-    mcmd.tau = 0
-    mcmd.Kp = 50.0
-    mcmd.Kd = 5.0
-    return mcmd
+def set_joint_positions(motiontime) -> LowCmd:
+    cmd_msg = init_low_command()
+
+    cmd_msg.motorCmd[FR_0].tau = -0.65
+    cmd_msg.motorCmd[FL_0].tau = +0.65
+    cmd_msg.motorCmd[RR_0].tau = -0.65
+    cmd_msg.motorCmd[RL_0].tau = +0.65
+
+    cmd_msg.motorCmd[FR_2].q = -math.pi/2 + 0.5 * math.sin(2 * math.pi / 5.0 * motiontime * 1e-3)
+    cmd_msg.motorCmd[FR_2].dq = 0.0
+    cmd_msg.motorCmd[FR_2].Kp = 5.0
+    cmd_msg.motorCmd[FR_2].Kd = 1.0
+
+    cmd_msg.motorCmd[FR_0].q = 0.0
+    cmd_msg.motorCmd[FR_0].dq = 0.0
+    cmd_msg.motorCmd[FR_0].Kp = 5.0
+    cmd_msg.motorCmd[FR_0].Kd = 1.0
+
+    cmd_msg.motorCmd[FR_1].q = 0.0
+    cmd_msg.motorCmd[FR_1].dq = 0.0
+    cmd_msg.motorCmd[FR_1].Kp = 5.0
+    cmd_msg.motorCmd[FR_1].Kd = 1.0
+
+    return cmd_msg
 
 
 def low_state_tracker(msg: LowState):
@@ -66,26 +99,21 @@ def test():
 
     global counter  # yes, I didn't want to do this, but it's the fastest solution
 
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(500)
 
     cmd_msg = init_low_command()
 
-    if not rospy.is_shutdown():
-        rospy.loginfo(cmd_msg)
-        pub.publish(cmd_msg)
-        rate.sleep()
-
-        counter += 1
-        cmd_msg.motorCmd[2] = set_motor_pos_step()
-        rospy.loginfo(cmd_msg)
-        pub.publish(cmd_msg)
-        rate.sleep()
+    motiontime = 0
 
     while not rospy.is_shutdown():
+        if counter > 10:
+            cmd_msg = set_joint_positions(motiontime)
+            motiontime += 2
         if counter > 10000:
             break
 
         counter += 1
+        pub.publish(cmd_msg)
         rate.sleep()
 
     print("Collected 10000 samples:")
