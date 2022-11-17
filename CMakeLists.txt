@@ -16,6 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf2
   geometry_msgs
   unitree_legged_msgs
+  go1_legged_msgs
 )
 
 # copied from unitree_legged_real/CMakeLists.txt
@@ -127,6 +128,7 @@ catkin_package(
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
    CATKIN_DEPENDS unitree_legged_msgs
+        go1_legged_msgs
 )
 
 ###########
@@ -198,6 +200,7 @@ target_link_libraries(highstate_to_range ${EXTRA_LIBS} ${catkin_LIBRARIES})
    scripts/testHigh.py
    scripts/joystick_control.py
    scripts/robot_state.py
+   scripts/lowController.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
