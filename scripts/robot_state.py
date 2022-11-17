@@ -2,7 +2,7 @@
 import os
 
 import rospy
-from unitree_legged_msgs.msg import HighState
+from go1_legged_msgs.msg import HighState
 
 MODE_NAMES = ["default stand", "force stand",
               "velocity walking", "position walking",

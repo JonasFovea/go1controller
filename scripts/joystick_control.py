@@ -7,7 +7,7 @@ import sys
 import rospy
 import yaml
 
-from unitree_legged_msgs.msg import HighCmd
+from go1_legged_msgs.msg import HighCmd
 from sensor_msgs.msg import Joy
 
 

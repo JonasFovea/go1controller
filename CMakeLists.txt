@@ -15,7 +15,6 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   tf2
   geometry_msgs
-  unitree_legged_msgs
   go1_legged_msgs
 )
 
@@ -127,8 +126,7 @@ catkin_package(
 #  LIBRARIES go1controller
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
-   CATKIN_DEPENDS unitree_legged_msgs
-        go1_legged_msgs
+   CATKIN_DEPENDS go1_legged_msgs
 )
 
 ###########
@@ -140,10 +138,9 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
-  ~/unitree_legged_sdk/include
 )
 
-link_directories(~/unitree_legged_sdk/lib)
+
 
 ## Declare a C++ library
  add_library(${PROJECT_NAME}

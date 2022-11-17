@@ -9,7 +9,7 @@
 #include <geometry_msgs/Quaternion.h>
 #include <sensor_msgs/Imu.h>
 
-#include <unitree_legged_msgs/HighState.h>
+#include <go1_legged_msgs/HighState.h>
 
 ros::Subscriber sub;
 tf2_ros::TransformBroadcaster* tfb;

@@ -7,7 +7,7 @@
 #include <tf2_ros/transform_broadcaster.h>
 #include <tf2/LinearMath/Quaternion.h>
 
-#include <unitree_legged_msgs/HighState.h>
+#include <go1_legged_msgs/HighState.h>
 
 ros::Subscriber sub;
 ros::Publisher pubs[3];

@@ -2,7 +2,7 @@
 #define JOYSTICK_CONTROL_H
 
 #include <ros/ros.h>
-#include <unitree_legged_msgs/HighCmd.h>
+#include <go1_legged_msgs/HighCmd.h>
 #include <unitree_legged_sdk/unitree_legged_sdk.h>
 #include <sensor_msgs/Joy.h>
 #include <stdio.h>

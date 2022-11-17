@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import rospy
-from unitree_legged_msgs.msg import HighCmd
+from go1_legged_msgs.msg import HighCmd
 
 HIGHLEVEL = 0xEE
 LOWLEVEL = 0xFF
