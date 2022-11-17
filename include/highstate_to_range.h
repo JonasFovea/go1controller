@@ -15,6 +15,6 @@ sensor_msgs::Range msg;
 
 const char * sensors[] = {"front", "left", "right"};
 
-void state_callback(const unitree_legged_msgs::HighState& state);
+void state_callback(const go1_legged_msgs::HighState& state);
 
 #endif //HIGHSTATE_TO_RANGE_H

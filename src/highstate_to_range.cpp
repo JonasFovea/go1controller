@@ -1,6 +1,6 @@
 #include "../include/highstate_to_range.h"
 
-void state_callback(const unitree_legged_msgs::HighState& state){
+void state_callback(const go1_legged_msgs::HighState& state){
     for (int i=0; i<3; ++i){
         msg.header.frame_id = "go1_" + (std::string) sensors[i];
         msg.range = state.rangeObstacle[i];

@@ -368,7 +368,7 @@ int main(int argc, char **argv){
     init_states();
 
     sub = nh.subscribe("/joy",1, joy_callback);
-    pub = nh.advertise<unitree_legged_msgs::HighCmd>("/high_cmd", 1000);
+    pub = nh.advertise<go1_legged_msgs::HighCmd>("/high_cmd", 1000);
     printf("[i] joystick_control publisher and subscriber established\n");
     ros::spin();
     printf("[i] Stopped joystick_control\n");

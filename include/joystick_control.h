@@ -66,7 +66,7 @@ typedef struct button_states{
  * ==========================================================
  */
 
-unitree_legged_msgs::HighCmd cmd;
+go1_legged_msgs::HighCmd cmd;
 
 controller gamepad;
 button_states buttons;

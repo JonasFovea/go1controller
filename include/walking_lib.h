@@ -17,7 +17,7 @@ typedef enum mode {IDLE_M, STAND_M, WALK_VEL_M, WALK_POS_M,
                    BACKFLIP_M, JUMP_YAW_M, GREET_M, DANCE1_M, DANCE2_M} Mode;
 
 
-unitree_legged_msgs::HighCmd cmd;
+go1_legged_msgs::HighCmd cmd;
 
 void init_high_cmd();
 

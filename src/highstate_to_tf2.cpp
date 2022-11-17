@@ -1,7 +1,7 @@
 #include "../include/highstate_to_tf2.h"
 
 
-void state_callback(const unitree_legged_msgs::HighState& state){
+void state_callback(const go1_legged_msgs::HighState& state){
     go1_transform.header.frame_id = "world";
     go1_transform.child_frame_id = "go1";
 

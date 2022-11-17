@@ -19,6 +19,6 @@ geometry_msgs::TransformStamped sensor_transform;
 
 const char* feet[] = {"FR", "FL", "RR", "RL"};
 
-void state_callback(const unitree_legged_msgs::HighState& state);
+void state_callback(const go1_legged_msgs::HighState& state);
 
 #endif  // HIGHSTATE_TO_TF2_H

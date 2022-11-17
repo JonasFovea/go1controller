@@ -1,6 +1,6 @@
 #include "../include/highstate_to_imu.h"
 
-void state_callback(const unitree_legged_msgs::HighState& state){
+void state_callback(const go1_legged_msgs::HighState& state){
     msg.header.frame_id = "go1";
 
     msg.orientation.x = state.imu.quaternion[0];

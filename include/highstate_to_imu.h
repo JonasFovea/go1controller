@@ -12,6 +12,6 @@ ros::Subscriber sub;
 ros::Publisher pub;
 sensor_msgs::Imu msg;
 
-void state_callback(const unitree_legged_msgs::HighState& state);
+void state_callback(const go1_legged_msgs::HighState& state);
 
 #endif //HIGHSTATE_TO_IMU_H
