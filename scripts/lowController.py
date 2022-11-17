@@ -34,7 +34,7 @@ def init_low_command() -> LowCmd:
         mcmd.q = pos
         mcmd.dq = 0
         mcmd.tau = 0
-        mcmd.Kp = 50.0
+        mcmd.Kp = 1.0
         mcmd.Kd = 5.0
 
     return cmd_msg
@@ -54,7 +54,7 @@ def set_motor_pos_step() -> MotorCmd:
 def low_state_tracker(msg: LowState):
     global counter  # yes, I didn't want to do this, but it's the fastest solution
     # global samples  # yes, I didn't want to do this, but it's the fastest solution
-
+    print(f"Sample recorded for {counter=:5d}")
     samples.append((counter, msg.motorState[2].q, msg.motorState[2].q_raw))
 
 
@@ -90,7 +90,7 @@ def test():
 
     print("Collected 10000 samples:")
     for s in samples:
-        print(f"\tt step: {s[0]:05d}\tq: {s[1]}\t q_raw: {s[2]}")
+        print(f"\tt step: {s[0]:5d}\tq: {s[1]}\t q_raw: {s[2]}")
 
 
 
