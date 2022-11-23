@@ -120,8 +120,10 @@ def test():
 
     if not rospy.is_shutdown():
         pub.publish(joint_controller.get_command())
+        print("[i] Published init position\nWaiting...")
         for _ in range(1000*sample_multiplier):
             rate.sleep()
+        print("[i] Waiting done. Continuing...")
 
     while not rospy.is_shutdown():
         dataset.append(joint_controller.get_joint_data_point(counter, FR_2))
