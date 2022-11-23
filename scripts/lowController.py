@@ -128,10 +128,8 @@ def test(kp=5.0, kd=1.0):
 
     if not rospy.is_shutdown():
         pub.publish(joint_controller.get_command())
-        print("[i] Published init position\nWaiting...")
         for _ in range(2000 * sample_multiplier):
             rate.sleep()
-        print("[i] Waiting done. Continuing...")
 
     while not rospy.is_shutdown():
         dataset.append(joint_controller.get_joint_data_point(counter, FR_2))
@@ -148,11 +146,32 @@ def test(kp=5.0, kd=1.0):
 
         rate.sleep()
 
+    for leg in leg_joints:
+        for joint, q in zip(leg, [q0, q1, q2]):
+            joint_controller.set_position(joint, q)
+
+    if not rospy.is_shutdown():
+        pub.publish(joint_controller.get_command())
+        for _ in range(2000 * sample_multiplier):
+            rate.sleep()
+
+    print("[i] Config done \n\n")
     return dataset
+
+
+def main():
+    kps = list(np.arange(3.0, 7.0, 1.0))
+    kds = list(np.arange(1.0, 2.0, 0.25))
+    results = []
+    for kp in kps:
+        for kd in kds:
+            results.append(test(kp, kd))
+
+    plot_datasets(results)
 
 
 if __name__ == "__main__":
     try:
-        plot_datasets([test()])
+        main()
     except rospy.ROSInterruptException as e:
         print(f"ROS Error: {e}\n\nExiting...")
