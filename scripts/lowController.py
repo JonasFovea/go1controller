@@ -51,9 +51,9 @@ class JointController:
 
     def initialize_values_from_state(self, state: MotorStateArray):
         for i in range(12):
-            self.joint_positions[i] = state.motorState[i].q
-            self.joint_velocities[i] = state.motorState[i].dq
-            self.joint_torques[i] = state.motorState[i].tau
+            self.joint_positions[i] = state.motor_state[i].q
+            self.joint_velocities[i] = state.motor_state[i].dq
+            self.joint_torques[i] = state.motor_state[i].tau
 
     def set_position(self, joint_nr: int, pos: float):
         self.joint_positions[joint_nr] = pos
@@ -68,7 +68,7 @@ class JointController:
         return msg
 
     def get_joint_data_point(self, timestep: int, joint_nr: int):
-        return {"t": timestep, "q_is": self.state.motorState[joint_nr].q, "q_set": self.joint_positions[joint_nr]}
+        return {"t": timestep, "q_is": self.state.motor_state[joint_nr].q, "q_set": self.joint_positions[joint_nr]}
 
     def motor_states_callback(self, state: MotorStateArray):
         self.state = state
