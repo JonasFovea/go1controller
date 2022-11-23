@@ -77,8 +77,8 @@ class JointController:
 def test():
     joint_controller = JointController()
 
-    pub = rospy.Publisher("go1_controller/JointCmd", JointCmd, queue_size=1)
-    rospy.Subscriber("go1_controller/low_state", LowState, joint_controller.low_state_callback, queue_size=10)
+    pub = rospy.Publisher("/base_node/joint_cmd", JointCmd, queue_size=1)
+    rospy.Subscriber("/base_node/state", LowState, joint_controller.low_state_callback, queue_size=10)
     rospy.init_node("low_controller", anonymous=True)
     rate = rospy.Rate(500)
 
