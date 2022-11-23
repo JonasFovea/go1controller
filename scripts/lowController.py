@@ -106,7 +106,7 @@ def test():
 
         if counter <= 500:
             joint_controller.set_position(FR_2, init_pos)
-        elif counter < 10000:
+        elif counter < 1000:
             joint_controller.set_position(FR_2, end_pos)
         else:
             break
