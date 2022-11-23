@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import rospy
+import matplotlib.pyplot as plt
+
 from go1_legged_msgs.msg import JointCmd
 from go1_legged_msgs.msg import MotorStateArray
 from go1_legged_msgs.msg import MotorState
@@ -74,6 +76,23 @@ class JointController:
         self.state = state
 
 
+def plot_dataset(data):
+
+    fig, ax = plt.subplots()
+
+    measured_q = []
+    set_q = []
+    t = []
+    for point in data:
+        measured_q.append(point["q_is"])
+        set_q.append(point["q_set"])
+        t.append(point["t"])
+
+    ax.plot(t, set_q)
+    ax.plot(t, measured_q)
+    plt.show()
+
+
 def test():
     joint_controller = JointController()
 
@@ -117,6 +136,8 @@ def test():
         rate.sleep()
 
     print(f"Collected dataset: \n{dataset}\n\n")
+    plot_dataset(dataset)
+
 
 
 if __name__ == "__main__":
