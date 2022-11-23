@@ -2,7 +2,7 @@
 
 import rospy
 from go1_legged_msgs.msg import JointCmd
-from go1_legged_msgs.msg import LowState
+from go1_legged_msgs.msg import MotorStateArray
 from go1_legged_msgs.msg import MotorState
 
 # HIGHLEVEL = 0xEE
@@ -49,7 +49,7 @@ class JointController:
 
         self.state = LowState()
 
-    def initialize_values_from_state(self, state: LowState):
+    def initialize_values_from_state(self, state: MotorStateArray):
         for i in range(12):
             self.joint_positions[i] = state.motorState[i].q
             self.joint_velocities[i] = state.motorState[i].dq
@@ -70,7 +70,7 @@ class JointController:
     def get_joint_data_point(self, timestep: int, joint_nr: int):
         return {"t": timestep, "q_is": self.state.motorState[joint_nr].q, "q_set": self.joint_positions[joint_nr]}
 
-    def low_state_callback(self, state: LowState):
+    def motor_states_callback(self, state: MotorStateArray):
         self.state = state
 
 
@@ -78,7 +78,7 @@ def test():
     joint_controller = JointController()
 
     pub = rospy.Publisher("/base_node/joint_cmd", JointCmd, queue_size=1)
-    rospy.Subscriber("/base_node/state", LowState, joint_controller.low_state_callback, queue_size=10)
+    rospy.Subscriber("/base_node/motor_states", MotorStateArray, joint_controller.motor_states_callback, queue_size=10)
     rospy.init_node("low_controller", anonymous=True)
     rate = rospy.Rate(500)
 
