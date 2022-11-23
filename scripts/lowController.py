@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import numpy as np
 import rospy
 import matplotlib.pyplot as plt
 
@@ -60,6 +60,10 @@ class JointController:
     def set_position(self, joint_nr: int, pos: float):
         self.joint_positions[joint_nr] = pos
 
+    def set_all_kp_kd(self, kp, kd):
+        self.joint_kps = [kp for _ in range(12)]
+        self.joint_kds = [kd for _ in range(12)]
+
     def get_command(self):
         msg = JointCmd()
         msg.q = self.joint_positions
@@ -76,7 +80,7 @@ class JointController:
         self.state = state
 
 
-def plot_dataset(data):
+def plot_dataset(data, kp, kd, path="~/Documents/Recordings/autosave/"):
     fig, ax = plt.subplots()
     ax.set(ylim=(-2.3, 1.1))
 
@@ -90,7 +94,7 @@ def plot_dataset(data):
 
     ax.plot(t, set_q)
     ax.plot(t, measured_q)
-    plt.show()
+    plt.savefig(f"{path}Kp{str(kp).replace('.', '-')}_Kd{str(kd).replace('.', '-')}.pdf", dpi='figure', format="pdf", backend="pgf")
 
 
 def test():
@@ -114,34 +118,42 @@ def test():
     q1 = 1.2
     q2 = -2.0
 
-    for leg in leg_joints:
-        for joint, q in zip(leg, [q0, q1, q2]):
-            joint_controller.set_position(joint, q)
+    test_kp = list(np.arange(1.0, 7.0, 0.5))
+    test_kd = list(np.arange(1.0, 5.0, 0.5))
 
-    if not rospy.is_shutdown():
-        pub.publish(joint_controller.get_command())
-        print("[i] Published init position\nWaiting...")
-        for _ in range(2000 * sample_multiplier):
-            rate.sleep()
-        print("[i] Waiting done. Continuing...")
+    for kp in test_kp:
+        for kd in test_kd:
+            print(f"[i] Testing combination:{kp=}, {kd=}")
+            joint_controller.set_all_kp_kd(kp, kd)
 
-    while not rospy.is_shutdown():
-        dataset.append(joint_controller.get_joint_data_point(counter, FR_2))
-        counter += 1
+            for leg in leg_joints:
+                for joint, q in zip(leg, [q0, q1, q2]):
+                    joint_controller.set_position(joint, q)
 
-        if counter <= 2000 * sample_multiplier:
-            joint_controller.set_position(FR_2, init_pos)
-        elif counter < 4000 * sample_multiplier:
-            joint_controller.set_position(FR_2, end_pos)
-        else:
-            break
+            if not rospy.is_shutdown():
+                pub.publish(joint_controller.get_command())
+                print("[i] Published init position\nWaiting...")
+                for _ in range(2000 * sample_multiplier):
+                    rate.sleep()
+                print("[i] Waiting done. Continuing...")
 
-        pub.publish(joint_controller.get_command())
+            while not rospy.is_shutdown():
+                dataset.append(joint_controller.get_joint_data_point(counter, FR_2))
+                counter += 1
 
-        rate.sleep()
+                if counter <= 2000 * sample_multiplier:
+                    joint_controller.set_position(FR_2, init_pos)
+                elif counter < 4000 * sample_multiplier:
+                    joint_controller.set_position(FR_2, end_pos)
+                else:
+                    break
 
-    # print(f"Collected dataset: \n{dataset}\n\n")
-    plot_dataset(dataset)
+                pub.publish(joint_controller.get_command())
+
+                rate.sleep()
+
+            # print(f"Collected dataset: \n{dataset}\n\n")
+            plot_dataset(dataset, kp, kd)
 
 
 if __name__ == "__main__":
