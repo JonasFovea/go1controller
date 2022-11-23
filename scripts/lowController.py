@@ -1,29 +1,24 @@
 #!/usr/bin/env python3
-import math
 
 import rospy
-from go1_legged_msgs.msg import LowCmd
+from go1_legged_msgs.msg import JointCmd
 from go1_legged_msgs.msg import LowState
-from go1_legged_msgs.msg import MotorCmd
 from go1_legged_msgs.msg import MotorState
 
-HIGHLEVEL = 0xEE
-LOWLEVEL = 0xFF
-TRIGERLEVEL = 0xF0
-
-PosStopF = 2.146E+9
-VelStopF = 16000.0
-
-PMSM = 0x0A
-BRAKE = 0x00
-
-target_pose = [-0.28, 1.12, -2.70,
-               0.28, 1.12, -2.70,
-               -0.28, 1.12, -2.70,
-               -0.28, 1.12, -2.70]
-
-counter = 0
-samples = []
+# HIGHLEVEL = 0xEE
+# LOWLEVEL = 0xFF
+# TRIGERLEVEL = 0xF0
+#
+# PosStopF = 2.146E+9
+# VelStopF = 16000.0
+#
+# PMSM = 0x0A
+# BRAKE = 0x00
+#
+# target_pose = [-0.28, 1.12, -2.70,
+#                0.28, 1.12, -2.70,
+#                -0.28, 1.12, -2.70,
+#                -0.28, 1.12, -2.70]
 
 FR_0 = 0
 FR_1 = 1
@@ -41,86 +36,86 @@ RL_0 = 9
 RL_1 = 10
 RL_2 = 11
 
-
-def init_low_command() -> LowCmd:
-    cmd_msg = LowCmd()
-    cmd_msg.head = [0xFE, 0xEF]
-    cmd_msg.levelFlag = LOWLEVEL
-
-    for mcmd in cmd_msg.motorCmd:
-        mcmd.mode = PMSM
-        mcmd.q = PosStopF
-        mcmd.dq = VelStopF
-        mcmd.tau = 0
-        mcmd.Kp = 0
-        mcmd.Kd = 0
-    print(f"Initialized low command:\n{cmd_msg}")
-    return cmd_msg
+leg_joints = [[FR_0, FR_1, FR_2], [FL_0, FL_1, FL_2], [RR_0, RR_1, RR_2], [RL_0, RL_1, RL_2]]
 
 
-def set_joint_positions(motiontime) -> LowCmd:
-    cmd_msg = init_low_command()
+class JointController:
+    def __init__(self):
+        self.joint_positions = [0.0 for _ in range(12)]
+        self.joint_velocities = [0.0 for _ in range(12)]
+        self.joint_torques = [0.0 for _ in range(12)]
+        self.joint_kps = [5.0 for _ in range(12)]
+        self.joint_kds = [1.0 for _ in range(12)]
 
-    cmd_msg.motorCmd[FR_0].tau = -0.65
-    cmd_msg.motorCmd[FL_0].tau = +0.65
-    cmd_msg.motorCmd[RR_0].tau = -0.65
-    cmd_msg.motorCmd[RL_0].tau = +0.65
+        self.state = LowState()
 
-    cmd_msg.motorCmd[FR_2].q = -math.pi/2 + 0.5 * math.sin(2 * math.pi / 5.0 * motiontime * 1e-3)
-    cmd_msg.motorCmd[FR_2].dq = 0.0
-    cmd_msg.motorCmd[FR_2].Kp = 5.0
-    cmd_msg.motorCmd[FR_2].Kd = 1.0
+    def initialize_values_from_state(self, state: LowState):
+        for i in range(12):
+            self.joint_positions[i] = state.motorState[i].q
+            self.joint_velocities[i] = state.motorState[i].dq
+            self.joint_torques[i] = state.motorState[i].tau
 
-    cmd_msg.motorCmd[FR_0].q = 0.0
-    cmd_msg.motorCmd[FR_0].dq = 0.0
-    cmd_msg.motorCmd[FR_0].Kp = 5.0
-    cmd_msg.motorCmd[FR_0].Kd = 1.0
+    def set_position(self, joint_nr: int, pos: float):
+        self.joint_positions[joint_nr] = pos
 
-    cmd_msg.motorCmd[FR_1].q = 0.0
-    cmd_msg.motorCmd[FR_1].dq = 0.0
-    cmd_msg.motorCmd[FR_1].Kp = 5.0
-    cmd_msg.motorCmd[FR_1].Kd = 1.0
+    def get_command(self):
+        msg = JointCmd()
+        msg.q = self.joint_positions
+        msg.dq = self.joint_velocities
+        msg.tau = self.joint_torques
+        msg.Kp = self.joint_kps
+        msg.Kd = self.joint_kds
+        return msg
 
-    return cmd_msg
+    def get_joint_data_point(self, timestep: int, joint_nr: int):
+        return {"t": timestep, "q_is": self.state.motorState[joint_nr].q, "q_set": self.joint_positions[joint_nr]}
 
-
-def low_state_tracker(msg: LowState):
-    global counter  # yes, I didn't want to do this, but it's the fastest solution
-    # global samples  # yes, I didn't want to do this, but it's the fastest solution
-    print(f"Sample recorded for {counter=:5d}")
-    samples.append((counter, msg.motorState[2].q, msg.motorState[2].q_raw))
-
+    def low_state_callback(self, state: LowState):
+        self.state = state
 
 
 def test():
-    pub = rospy.Publisher("go1_controller/low_cmd", LowCmd, queue_size=1)
-    rospy.Subscriber("go1_controller/low_state", LowState, low_state_tracker, queue_size=10)
+    joint_controller = JointController()
+
+    pub = rospy.Publisher("go1_controller/JointCmd", JointCmd, queue_size=1)
+    rospy.Subscriber("go1_controller/low_state", LowState, joint_controller.low_state_callback, queue_size=10)
     rospy.init_node("low_controller", anonymous=True)
-
-    global counter  # yes, I didn't want to do this, but it's the fastest solution
-
     rate = rospy.Rate(500)
 
-    cmd_msg = init_low_command()
+    counter = 0
+    dataset = []
 
-    motiontime = 0
+    init_pos = -2.0
+    end_pos = -1.5
 
-    while not rospy.is_shutdown():
-        if counter > 10:
-            cmd_msg = set_joint_positions(motiontime)
-            motiontime += 2
-        if counter > 10000:
-            break
+    q0 = 0.0
+    q1 = 1.2
+    q2 = -2.0
 
-        counter += 1
-        pub.publish(cmd_msg)
+    for leg in leg_joints:
+        for joint, q in zip(leg, [q0, q1, q2]):
+            joint_controller.set_position(joint, q)
+
+    if not rospy.is_shutdown():
+        pub.publish(joint_controller.get_command())
         rate.sleep()
 
-    print("Collected 10000 samples:")
-    for s in samples:
-        print(f"\tt step: {s[0]:5d}\tq: {s[1]}\t q_raw: {s[2]}")
+    while not rospy.is_shutdown():
+        dataset.append(joint_controller.get_joint_data_point(counter, FR_2))
+        counter += 1
 
+        if counter <= 500:
+            joint_controller.set_position(FR_2, init_pos)
+        elif counter < 10000:
+            joint_controller.set_position(FR_2, end_pos)
+        else:
+            break
 
+        pub.publish(joint_controller.get_command())
+
+        rate.sleep()
+
+    print(f"Collected dataset: \n{dataset}\n\n")
 
 
 if __name__ == "__main__":
