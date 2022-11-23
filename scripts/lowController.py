@@ -99,7 +99,10 @@ def test():
     pub = rospy.Publisher("/base_node/joint_cmd", JointCmd, queue_size=1)
     rospy.Subscriber("/base_node/motor_states", MotorStateArray, joint_controller.motor_states_callback, queue_size=10)
     rospy.init_node("low_controller", anonymous=True)
-    rate = rospy.Rate(500)
+
+    sample_multiplier = 2
+
+    rate = rospy.Rate(500*sample_multiplier)
 
     counter = 0
     dataset = []
@@ -117,16 +120,16 @@ def test():
 
     if not rospy.is_shutdown():
         pub.publish(joint_controller.get_command())
-        for _ in range(100):
+        for _ in range(1000*sample_multiplier):
             rate.sleep()
 
     while not rospy.is_shutdown():
         dataset.append(joint_controller.get_joint_data_point(counter, FR_2))
         counter += 1
 
-        if counter <= 500:
+        if counter <= 500*sample_multiplier:
             joint_controller.set_position(FR_2, init_pos)
-        elif counter < 1000:
+        elif counter < 1000*sample_multiplier:
             joint_controller.set_position(FR_2, end_pos)
         else:
             break
