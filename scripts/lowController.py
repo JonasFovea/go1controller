@@ -80,10 +80,7 @@ class JointController:
         self.state = state
 
 
-def plot_dataset(data, kp, kd, path="~/Documents/Recordings/autosave/"):
-    fig, ax = plt.subplots()
-    ax.set(ylim=(-2.3, 1.1))
-
+def plot_dataset(data, kp, kd, ax, path="~/Documents/Recordings/autosave/"):
     measured_q = []
     set_q = []
     t = []
@@ -92,9 +89,9 @@ def plot_dataset(data, kp, kd, path="~/Documents/Recordings/autosave/"):
         set_q.append(point["q_set"])
         t.append(point["t"])
 
-    ax.plot(t, set_q)
-    ax.plot(t, measured_q)
-    plt.savefig(f"{path}Kp{str(kp).replace('.', '-')}_Kd{str(kd).replace('.', '-')}.pdf", dpi='figure', format="pdf", backend="pgf")
+    ax.plot(t, set_q, "b")
+    ax.plot(t, measured_q, label=f"{kp}-{kd}")
+    # plt.savefig(f"{path}Kp{str(kp).replace('.', '-')}_Kd{str(kd).replace('.', '-')}.pdf", dpi='figure', format="pdf", backend="pgf")
 
 
 def test():
@@ -120,6 +117,8 @@ def test():
 
     test_kp = list(np.arange(1.0, 7.0, 0.5))
     test_kd = list(np.arange(1.0, 5.0, 0.5))
+
+    fig, ax = plt.subplots()
 
     for kp in test_kp:
         for kd in test_kd:
@@ -153,7 +152,12 @@ def test():
                 rate.sleep()
 
             # print(f"Collected dataset: \n{dataset}\n\n")
-            plot_dataset(dataset, kp, kd)
+            plot_dataset(dataset, kp, kd, ax)
+            for _ in range(2000 * sample_multiplier):
+                rate.sleep()
+
+    ax.set(ylim=(-2.3, 1.1))
+    plt.show()
 
 
 if __name__ == "__main__":
