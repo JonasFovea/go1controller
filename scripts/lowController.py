@@ -47,7 +47,7 @@ class JointController:
         self.joint_kps = [5.0 for _ in range(12)]
         self.joint_kds = [1.0 for _ in range(12)]
 
-        self.state = LowState()
+        self.state = MotorStateArray()
 
     def initialize_values_from_state(self, state: MotorStateArray):
         for i in range(12):
