@@ -121,7 +121,7 @@ def test():
     if not rospy.is_shutdown():
         pub.publish(joint_controller.get_command())
         print("[i] Published init position\nWaiting...")
-        for _ in range(1000*sample_multiplier):
+        for _ in range(2000*sample_multiplier):
             rate.sleep()
         print("[i] Waiting done. Continuing...")
 
@@ -129,9 +129,9 @@ def test():
         dataset.append(joint_controller.get_joint_data_point(counter, FR_2))
         counter += 1
 
-        if counter <= 500*sample_multiplier:
+        if counter <= 2000*sample_multiplier:
             joint_controller.set_position(FR_2, init_pos)
-        elif counter < 1000*sample_multiplier:
+        elif counter < 4000*sample_multiplier:
             joint_controller.set_position(FR_2, end_pos)
         else:
             break
@@ -140,7 +140,7 @@ def test():
 
         rate.sleep()
 
-    print(f"Collected dataset: \n{dataset}\n\n")
+    # print(f"Collected dataset: \n{dataset}\n\n")
     plot_dataset(dataset)
 
 
