@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from go1_legged_msgs.msg import JointCmd
 from go1_legged_msgs.msg import MotorStateArray
 from go1_legged_msgs.msg import MotorState
+from go1_legged_msgs.srv import SetControl
 
 # HIGHLEVEL = 0xEE
 # LOWLEVEL = 0xFF
@@ -160,6 +161,15 @@ def test(kp=5.0, kd=1.0):
 
 
 def main():
+    rospy.wait_for_service("/base_node/set_control")
+    try:
+        set_control = rospy.ServiceProxy("/base_node/set_control", SetControl)
+        response = set_control("Full")
+        print(f"[i] Control mode selection {'success' if response.success else 'failed'}:\n\t{response.message}")
+    except rospy.ServiceException as se:
+        print(se)
+        exit(-1)
+
     kps = list(np.arange(3.0, 7.0, 1.0))
     kds = list(np.arange(1.0, 2.0, 0.25))
     results = []
