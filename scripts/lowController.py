@@ -60,6 +60,9 @@ class JointController:
 
     def set_position(self, joint_nr: int, pos: float):
         self.joint_positions[joint_nr] = pos
+        
+    def set_velocity(self, joint_nr: int, vel: float):
+        self.joint_velocities[joint_nr] = vel
 
     def set_torque(self, joint_nr: int, tau: float):
         self.joint_torques[joint_nr] = tau
@@ -125,6 +128,7 @@ def test(kp=5.0, kd=1.0):
 
     print(f"[i] Testing combination:{kp=}, {kd=}")
     joint_controller.set_joint_kp_kd(FR_2, kp, kd)
+    joint_controller.set_velocity(FR_2, 2.0)
 
     joint_controller.set_torque(FR_0, -0.65)
     joint_controller.set_torque(FL_0, +0.65)
